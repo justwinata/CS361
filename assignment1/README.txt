@@ -4,11 +4,11 @@ LASTNAME: Elaiho; Winata;
 CSACCOUNT: ________; justwin;
 EMAIL: ________@cs.utexas.edu; justwin@cs.utexas.edu; 
 
-#Program Description
+Program Description
     [Description of program including information on what id does and how it runs]
 
-#Status
+Status
     [Implemented all of the requirements? If not, explain what and why]
 
-#Test Cases and Output
+Test Cases and Output
    [Test cases and output of our code on test cases]
