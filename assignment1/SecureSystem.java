@@ -37,15 +37,26 @@ public class SecureSystem {
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {
 			Scanner input = new Scanner(new File(args[0]));
-		}
-		catch(FileNotFoundException e){ e.printStackTrace();}	
+			while (input.hasNextLine()) {
+				String line = input.nextLine().toLowerCase();
+				String[] params = line.split("\\s+");
+				if (checkRead(params)) {
+					InstructionObject io = new InstructionObject(params[0], params[1], params[2]);
+				} else if (checkWrite(params)) {
+					int value = Integer.parseInt(params[3]);
+					InstructionObject io = new InstructionObject(params[0], params[1], params[2], value);
+					
+				} else {
+					String b = "bad";
+					InstructionObject io = new InstructionObject(b);
+				}
+			}
+		} catch(FileNotFoundException e) { 
+			e.printStackTrace(); 
+		}	
 	}
 
-	class InstructionObject {
-
-		public InstructionObject(String instruction) {}
-	}
-
+	
 	public enum SecurityLevel {
 			LOW(0),
 			HIGH(1);
@@ -64,4 +75,26 @@ public class SecureSystem {
 			}
 	}
 
+	public static boolean checkRead(String[] params) {
+		if (params[0].equals("read")) {
+			if (params.length == 3) {
+				return true;
+			} 
+		} 
+		return false;	
+	}
+
+	public static boolean checkWrite(String[] params) {
+		if (params[0].equals("write")) {
+			if (params.length == 4) {
+				try {
+					int value = Integer.parseInt(params[3]);
+				} catch (NumberFormatException n) {
+					return false;
+				}
+				return true;
+			} 
+		} 
+		return false;
+	}
 }
