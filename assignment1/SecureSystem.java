@@ -37,8 +37,6 @@ public class SecureSystem {
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {
 			Scanner input = new Scanner(new File(args[0]));
-			String cake = input.next();
-			System.out.println(cake);
 		}
 		catch(FileNotFoundException e){ e.printStackTrace();}	
 	}
@@ -49,10 +47,21 @@ public class SecureSystem {
 	}
 
 	public enum SecurityLevel {
-			LOW,
-			HIGH
+			LOW(0),
+			HIGH(1);
+
+			public int num;
+
+			private SecurityLevel(int value) {
+				num = value;
+			}
+
+			public boolean dominates(SecurityLevel l) {
+				if (this.num >= l.num)
+					return true;
+				else 
+					return false;
+			}
 	}
 
-
-	
 }
