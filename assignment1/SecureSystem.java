@@ -4,18 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SecureSystem {
-	// object and subject have mapping for name and their values
-	private HashMap<String,Integer> objectValues;
-	private HashMap<String,Integer> subjectValues;
-	// object and subject mapping for name and security levels
-	private HashMap<String, SecurityLevel> objectLevels;
-	private HashMap<String, SecurityLevel> subjectLevels;
-
+	
 	public SecureSystem(){
-		objectValues = new HashMap<String, Integer>();
-	 	subjectValues = new HashMap<String, Integer>();
-	 	objectLevels = new HashMap<String, SecurityLevel>();
-	 	subjectLevels = new HashMap<String, SecurityLevel>();
+		
 	}
 
 	public static void main(String[] args) {
