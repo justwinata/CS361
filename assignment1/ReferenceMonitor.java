@@ -25,7 +25,10 @@ public void printExecute (InstructionObject io) {
 		System.out.println("Bad Instruction");
 	}
 	else if (io.getType().equals("write")) {
-		System.out.println(io.getSubject() + " writes value " + io.getValue())
+		System.out.println(io.getSubject() + " writes value " + io.getValue() + " to " + io.getObject());
+	}
+	else if(io.getType().equals("read")) {
+		System.out.println(io.getSubject() + " reads " + io.getObject());
 	}
 }
 
