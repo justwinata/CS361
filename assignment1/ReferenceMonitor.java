@@ -7,10 +7,6 @@ public class ReferenceMonitor {
 
 	}
 
-
-
-
-
 	class ObjectManager {
 
 		public ObjectManager() {
