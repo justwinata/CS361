@@ -18,20 +18,18 @@ public class SecureSystem {
 	 	subjectLevels = new HashMap<String, SecurityLevel>();
 	}
 
-	public void createSubject(String name, SecurityLevel level) {
-		subjectLevels.put(name,level);
-	}
-	 
-
 	public static void main(String[] args) {
 
 	 	SecureSystem sys = new SecureSystem();
+	 	ReferenceMonitor ref = new ReferenceMonitor();
 
 	 	SecurityLevel low  = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
 
-		sys.createSubject("Lyle", low);
-		sys.createSubject("Hal", high);
+		ref.createSubject("Lyle", low);
+		ref.createSubject("Hal", high);
+		ref.createObject("LObj",low);
+		ref.createObject("HObj", high);
 	 	
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {
@@ -50,31 +48,13 @@ public class SecureSystem {
 					String b = "bad";
 					io = new InstructionObject(b);
 				}
-				ReferenceMonitor ref = new ReferenceMonitor(io);
+				ref.addInstruction(io);
 			}
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
 		}	
 	}
 
-	
-	public enum SecurityLevel {
-			LOW(0),
-			HIGH(1);
-
-			public int num;
-
-			private SecurityLevel(int value) {
-				num = value;
-			}
-
-			public boolean dominates(SecurityLevel l) {
-				if (this.num >= l.num)
-					return true;
-				else 
-					return false;
-			}
-	}
 
 	public static boolean checkRead(String[] params) {
 		if (params[0].equals("read")) {
@@ -98,4 +78,5 @@ public class SecureSystem {
 		} 
 		return false;
 	}
+
 }

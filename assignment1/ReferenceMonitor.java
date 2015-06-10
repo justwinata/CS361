@@ -2,7 +2,7 @@
 
 public class ReferenceMonitor {
 
-	public ReferenceMonitor(InstructionObject io) {
+	public ReferenceMonitor() {
 		ObjectManager om = new ObjectManager();
 
 	}
@@ -14,6 +14,10 @@ public class ReferenceMonitor {
 		}
 	}
 	
+
+
+public void addInstruction(InstructionObject io) {
+
 }
 
 public void printExecute (InstructionObject io) {
@@ -21,10 +25,14 @@ public void printExecute (InstructionObject io) {
 		System.out.println("Bad Instruction");
 	}
 	else if (io.getType().equals("write")) {
-		System.out.println(io.getSubject() + " writes value " + io.getValue())
+		System.out.println(io.getSubject() + " writes value " + io.getValue() + " to " + io.getObject());
+	}
+	else if(io.getType().equals("read")) {
+		System.out.println(io.getSubject() + " reads " + io.getObject());
 	}
 }
 
+/*
 public void printState (InstructionObject io) {
 	System.out.println("The current state is:");
 	System.out.println("   " + ?.objname + "has value: " + ?.temp);
@@ -32,4 +40,15 @@ public void printState (InstructionObject io) {
 	System.out.println("   " + ?.subjname + "has recently read: " + ?.temp);
 	System.out.println("   " + ?.subjname + "has recently read: " + ?.temp);
 	System.out.println();
+}
+*/
+public void createSubject(String s, SecurityLevel l) {
+
+}
+
+public void createObject(String s, SecurityLevel l) {
+	
+}
+
+
 }
