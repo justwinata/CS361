@@ -26,7 +26,6 @@ public class SecureSystem {
 	public static void main(String[] args) {
 
 	 	SecureSystem sys = new SecureSystem();
-	 	ReferenceMonitor ref = new ReferenceMonitor();
 
 	 	SecurityLevel low  = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
@@ -40,16 +39,18 @@ public class SecureSystem {
 			while (input.hasNextLine()) {
 				String line = input.nextLine().toLowerCase();
 				String[] params = line.split("\\s+");
+				InstructionObject io;
 				if (checkRead(params)) {
-					InstructionObject io = new InstructionObject(params[0], params[1], params[2]);
+					io = new InstructionObject(params[0], params[1], params[2]);
 				} else if (checkWrite(params)) {
 					int value = Integer.parseInt(params[3]);
-					InstructionObject io = new InstructionObject(params[0], params[1], params[2], value);
+					 io = new InstructionObject(params[0], params[1], params[2], value);
 					
 				} else {
 					String b = "bad";
-					InstructionObject io = new InstructionObject(b);
+					io = new InstructionObject(b);
 				}
+				ReferenceMonitor ref = new ReferenceMonitor(io);
 			}
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
