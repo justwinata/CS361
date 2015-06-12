@@ -23,9 +23,9 @@ public class ReferenceMonitor {
 	
 	public void addInstruction(InstructionObject io) {
 		this.inObj = io;
+		SecurityLevel one = subjectLevels.get(inObj.getSubject());
+		SecurityLevel two = objectLevels.get(inObj.getObject());
 		if (inObj.getType().equals("read")) {
-			SecurityLevel one = subjectLevels.get(inObj.getSubject());
-			SecurityLevel two = objectLevels.get(inObj.getObject());
 			String s = inObj.getSubject();
 			int v = objectValues.get(inObj.getObject());
 			if (one.dominates(two)) {
@@ -33,21 +33,32 @@ public class ReferenceMonitor {
 			} else {
 				subjectValues.put(s,0);
 			}
-			
+			printExecute(inObj);
+		} else if (inObj.getType().equals("write")) {
+			String s = inObj.getObject();
+			int v = inObj.getValue();
+			if (!one.dominates(two)|| one.equals(two)) {
+				objectValues.put(s,v);
+			}
+			printExecute(inObj);
+		} else {
+			printExecute(inObj);
 		}
 			
 	}
 
 	public void printExecute (InstructionObject io) {
-		if (io.getType().equals("bad")) {
-			System.out.println("Bad Instruction");
+		
+		if (io.getType().equals("read")) {
+			System.out.println(io.getSubject() + " reads " + io.getObject());
 		}
 		else if (io.getType().equals("write")) {
 			System.out.println(io.getSubject() + " writes value " + io.getValue() + " to " + io.getObject());
 		}
-		else if(io.getType().equals("read")) {
-			System.out.println(io.getSubject() + " reads " + io.getObject());
+		else  { 
+			System.out.println("Bad Instruction");
 		}
+			
 	}
 
 	/*
