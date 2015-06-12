@@ -23,4 +23,6 @@ Completion: 100%
 Finished all requirements
 
 Test Cases and Output
-   [Test cases and output of our code on test cases]
+Four test cases are included: the one provided on the assignment details as well as three original 
+ones. These cases are included as files "instructionList[n]" and their corresponding expected 
+outputs are included as files "expected[n]".
