@@ -5,7 +5,10 @@ CSACCOUNT: elaiho; justwin;
 EMAIL: elaiho@cs.utexas.edu; justwin@cs.utexas.edu; 
 
 Program Description
+<<<<<<< HEAD
 
+=======
+>>>>>>> 59f4809d6f8a052bf370403d7440a550f9559b2b
 The main function in the SecureSystem.java file first creates a SecureSystem object, and the creates 
 security levels "low" and "high" to pass as security level parameters. The main fuction then creates 
 subjects and objects through the Reference Monitor. Main function then reads a file passed into 

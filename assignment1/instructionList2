@@ -1,0 +1,6 @@
+write Hal
+read Lyle
+write Hal Hobj
+read Lyle Lobj 100
+notanisntruction Lyle Hobj
+Hello, world!

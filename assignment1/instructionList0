@@ -1,0 +1,11 @@
+WRITE Lyle LObj 42
+wrIte Hal Hobj 52
+write Hal Lobj 62
+writE Lyle Hobj 72
+READ Lyle Lobj
+read Hal Hobj
+reAD Hal Lobj
+REad Lyle Hobj
+this is not an instruction
+read lyle hobj 94
+write lyle hobj
