@@ -58,25 +58,27 @@ public class ReferenceMonitor {
 		else  { 
 			System.out.println("Bad Instruction");
 		}
-			
+		printState();
 	}
 
-	/*
-	public void printState (InstructionObject io) {
+	
+	public void printState () {
 		System.out.println("The current state is:");
-		System.out.println("   " + ?.objname + "has value: " + ?.temp);
-		System.out.println("   " + ?.objname + "has value: " + temp);
-		System.out.println("   " + ?.subjname + "has recently read: " + ?.temp);
-		System.out.println("   " + ?.subjname + "has recently read: " + ?.temp);
+		System.out.println("   " + "LObj" + " has value: " + objectValues.get("LObj".toLowerCase()));
+		System.out.println("   " + "HObj" + " has value: " + objectValues.get("HObj"));
+		System.out.println("   " + "Lyle" + " has recently read: " + subjectValues.get("Lyle"));
+		System.out.println("   " + "Hal" + " has recently read: " + subjectValues.get("Hal"));
 		System.out.println();
 	}
-	*/
+	
 	
 	public void createSubject(String s, SecurityLevel l) {
+		s = s.toLowerCase();
 		subjectLevels.put(s,l);
 	}
 
 	public void createObject(String s, SecurityLevel l) {
+		s = s.toLowerCase();
 		objectLevels.put(s,l);
 	}
 
