@@ -10,6 +10,7 @@ public class ReferenceMonitor {
 	// object and subject mapping for name and security levels
 	private HashMap<String, SecurityLevel> objectLevels;
 	private HashMap<String, SecurityLevel> subjectLevels;
+	private InstructionObject inObj;
 
 	public ReferenceMonitor() {
 		ObjectManager om = new ObjectManager();
@@ -21,7 +22,20 @@ public class ReferenceMonitor {
 
 	
 	public void addInstruction(InstructionObject io) {
-
+		this.inObj = io;
+		if (inObj.getType().equals("read")) {
+			SecurityLevel one = subjectLevels.get(inObj.getSubject());
+			SecurityLevel two = objectLevels.get(inObj.getObject());
+			String s = inObj.getSubject();
+			int v = objectValues.get(inObj.getObject());
+			if (one.dominates(two)) {
+				subjectValues.put(s,v);
+			} else {
+				subjectValues.put(s,0);
+			}
+			
+		}
+			
 	}
 
 	public void printExecute (InstructionObject io) {
@@ -48,18 +62,18 @@ public class ReferenceMonitor {
 	*/
 	
 	public void createSubject(String s, SecurityLevel l) {
-
+		subjectLevels.put(s,l);
 	}
 
 	public void createObject(String s, SecurityLevel l) {
-		
+		objectLevels.put(s,l);
 	}
 
 	class ObjectManager {
+		
+		public ObjectManager() {
 
-			public ObjectManager() {
-
-			}
+		}
 	}
 
 }
