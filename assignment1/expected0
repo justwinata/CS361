@@ -1,5 +1,5 @@
 
-Reading from file: instructionList2
+Reading from file: instructionList0
 
 lyle writes value 42 to lobj
 The current state is: 
@@ -48,32 +48,32 @@ The current state is:
    LObj has value: 42
    HObj has value: 72
    Lyle has recently read: 42
-   Hal has recently read: 72
+   Hal has recently read: 42
 
 lyle reads hobj
 The current state is: 
    LObj has value: 42
    HObj has value: 72
    Lyle has recently read: 0
-   Hal has recently read: 72
+   Hal has recently read: 42
 
 Bad Instruction
 The current state is: 
    LObj has value: 42
    HObj has value: 72
    Lyle has recently read: 0
-   Hal has recently read: 72
+   Hal has recently read: 42
 
 Bad Instruction
 The current state is: 
    LObj has value: 42
    HObj has value: 72
    Lyle has recently read: 0
-   Hal has recently read: 72
+   Hal has recently read: 42
 
 Bad Instruction
 The current state is: 
    LObj has value: 42
    HObj has value: 72
    Lyle has recently read: 0
-   Hal has recently read: 72
+   Hal has recently read: 42
