@@ -4,23 +4,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SecureSystem {
-	
+	private ReferenceMonitor ref;
+
 	public SecureSystem(){
-		
+		ref = new ReferenceMonitor();
+	}
+
+	public ReferenceMonitor getRef() {
+		return ref;
 	}
 
 	public static void main(String[] args) {
 
 	 	SecureSystem sys = new SecureSystem();
-	 	ReferenceMonitor ref = new ReferenceMonitor();
-
 	 	SecurityLevel low  = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
 
-		ref.createSubject("Lyle", low);
-		ref.createSubject("Hal", high);
-		ref.createObject("LObj",low);
-		ref.createObject("HObj", high);
+		sys.getRef().createSubject("Lyle", low);
+		sys.getRef().createSubject("Hal", high);
+		sys.getRef().createObject("LObj",low);
+		sys.getRef().createObject("HObj", high);
 	 	
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {
@@ -41,7 +44,7 @@ public class SecureSystem {
 					String b = "bad";
 					io = new InstructionObject(b);
 				}
-				ref.addInstruction(io);
+				sys.getRef().addInstruction(io);
 			}
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
