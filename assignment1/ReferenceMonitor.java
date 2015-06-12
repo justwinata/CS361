@@ -25,7 +25,7 @@ public class ReferenceMonitor {
 		this.inObj = io;
 		SecurityLevel one = subjectLevels.get(inObj.getSubject());
 		SecurityLevel two = objectLevels.get(inObj.getObject());
-		if (inObj.getType().equals("read")) {
+		if (inObj.getType().toLowerCase().equals("read")) {
 			String s = inObj.getSubject();
 			int v = objectValues.get(inObj.getObject());
 			if (one.dominates(two)) {
@@ -34,7 +34,7 @@ public class ReferenceMonitor {
 				subjectValues.put(s,0);
 			}
 			printExecute(inObj);
-		} else if (inObj.getType().equals("write")) {
+		} else if (inObj.getType().toLowerCase().equals("write")) {
 			String s = inObj.getObject();
 			int v = inObj.getValue();
 			if (!one.dominates(two)|| one.equals(two)) {
