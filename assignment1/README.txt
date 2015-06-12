@@ -5,10 +5,10 @@ CSACCOUNT: elaiho; justwin;
 EMAIL: elaiho@cs.utexas.edu; justwin@cs.utexas.edu; 
 
 Program Description
-    [Description of program including information on what id does and how it runs]
+    The main function in the SecureSystem.java file first creates a SecureSystem object, and the creates security levels "low" and "high" to pass as security level parameters. The main fuction then creates subjects and objects through the Reference Monitor. Main function then reads a file passed into SecureSystem and collects each line of string input in the file. Each line of string ing input is parsed and become parameters for an Instruction Object  (type, subject, object value). The InstructionObject is the passed into 
 
 Status
-    [Implemented all of the requirements? If not, explain what and why]
+    Completion: 100%
 
 Test Cases and Output
    [Test cases and output of our code on test cases]
