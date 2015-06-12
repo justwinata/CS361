@@ -49,11 +49,11 @@ public class ReferenceMonitor {
 
 	public void printExecute (InstructionObject io) {
 		
-		if (io.getType().equals("read")) {
-			System.out.println(io.getSubject() + " reads " + io.getObject());
+		if (io.getType().toLowerCase().equals("read")) {
+			System.out.println(io.getSubject().toLowerCase() + " reads " + io.getObject().toLowerCase());
 		}
-		else if (io.getType().equals("write")) {
-			System.out.println(io.getSubject() + " writes value " + io.getValue() + " to " + io.getObject());
+		else if (io.getType().toLowerCase().equals("write")) {
+			System.out.println(io.getSubject().toLowerCase() + " writes value " + io.getValue() + " to " + io.getObject().toLowerCase());
 		}
 		else  { 
 			System.out.println("Bad Instruction");
@@ -64,7 +64,7 @@ public class ReferenceMonitor {
 	
 	public void printState () {
 		System.out.println("The current state is:");
-		System.out.println("   " + "LObj" + " has value: " + objectValues.get("LObj".toLowerCase()));
+		System.out.println("   " + "LObj" + " has value: " + objectValues.get("LObj"));
 		System.out.println("   " + "HObj" + " has value: " + objectValues.get("HObj"));
 		System.out.println("   " + "Lyle" + " has recently read: " + subjectValues.get("Lyle"));
 		System.out.println("   " + "Hal" + " has recently read: " + subjectValues.get("Hal"));
@@ -73,13 +73,15 @@ public class ReferenceMonitor {
 	
 	
 	public void createSubject(String s, SecurityLevel l) {
-		s = s.toLowerCase();
+		//s = s.toLowerCase();
 		subjectLevels.put(s,l);
+		subjectValues.put(s, 0);
 	}
 
 	public void createObject(String s, SecurityLevel l) {
-		s = s.toLowerCase();
+		//s = s.toLowerCase();
 		objectLevels.put(s,l);
+		objectValues.put(s,0);
 	}
 
 	class ObjectManager {

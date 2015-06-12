@@ -25,8 +25,10 @@ public class SecureSystem {
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {
 			Scanner input = new Scanner(new File(args[0]));
+			System.out.println("\nReading from file: " + args[0]+ "\n");
+
 			while (input.hasNextLine()) {
-				String line = input.nextLine().toLowerCase();
+				String line = input.nextLine();
 				String[] params = line.split("\\s+");
 				InstructionObject io;
 				if (checkRead(params)) {
@@ -48,7 +50,7 @@ public class SecureSystem {
 
 
 	public static boolean checkRead(String[] params) {
-		if (params[0].equals("read")) {
+		if (params[0].toLowerCase().equals("read")) {
 			if (params.length == 3) {
 				return true;
 			} 
@@ -57,7 +59,7 @@ public class SecureSystem {
 	}
 
 	public static boolean checkWrite(String[] params) {
-		if (params[0].equals("write")) {
+		if (params[0].toLowerCase().equals("write")) {
 			if (params.length == 4) {
 				try {
 					int value = Integer.parseInt(params[3]);
