@@ -1,0 +1,93 @@
+
+Reading from file: instructionList1
+
+lyle writes value 10 to lobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 0
+   Lyle has recently read: 0
+   Hal has recently read: 0
+
+lyle reads lobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 0
+   Lyle has recently read: 10
+   Hal has recently read: 0
+
+hal writes value 20 to hobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 20
+   Lyle has recently read: 10
+   Hal has recently read: 0
+
+hal reads hobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 20
+   Lyle has recently read: 10
+   Hal has recently read: 20
+
+lyle writes value 30 to hobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 30
+   Lyle has recently read: 10
+   Hal has recently read: 20
+
+hal reads hobj
+The current state is: 
+   LObj has value: 10
+   HObj has value: 30
+   Lyle has recently read: 10
+   Hal has recently read: 30
+
+lyle writes value 40 to lobj
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 10
+   Hal has recently read: 30
+
+hal reads lobj
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 10
+   Hal has recently read: 40
+
+hal writes value 50 to lobj
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 10
+   Hal has recently read: 40
+
+lyle reads hobj
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 0
+   Hal has recently read: 40
+
+Bad Instruction
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 0
+   Hal has recently read: 40
+
+Bad Instruction
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 0
+   Hal has recently read: 40
+
+Bad Instruction
+The current state is: 
+   LObj has value: 40
+   HObj has value: 30
+   Lyle has recently read: 0
+   Hal has recently read: 40
