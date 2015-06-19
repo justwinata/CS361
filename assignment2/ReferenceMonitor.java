@@ -51,7 +51,7 @@ public class ReferenceMonitor {
 		} else if (inObj.getType().toLowerCase().equals("create")) {
 			String s = inObj.getObject();
 			if (! (subjectValues.containsKey(s) || objectValues.containsKey(s) ) ) {
-				createObject(s, one)
+				createObject(s, one);
 			}
 			printExecute(inObj);
 		} else if (inObj.getType().toLowerCase().equals("run")) {
@@ -87,7 +87,6 @@ public class ReferenceMonitor {
 		else  { 
 			System.out.println("Bad Instruction");
 		}
-		printState();
 	}
 
 	public void createSubject(String s, SecurityLevel l) {
