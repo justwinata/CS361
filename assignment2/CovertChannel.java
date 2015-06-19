@@ -3,7 +3,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.FileInputStream;
 
 public class CovertChannel {
 
@@ -14,6 +15,7 @@ public class CovertChannel {
 
 	public static void main(String[] args) {
 		File f;
+		InputStream is = null;
 		boolean verbose;
 		SecureSystem sys;
 		SecurityLevel high = SecurityLevel.HIGH;
@@ -32,8 +34,13 @@ public class CovertChannel {
 		sys.createSubject("Lyle", low);
 
 		try {
+			Scanner sc = new Scanner(f);
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
+			is = new FileInputStream(f);
 			FileOutputStream log = new FileOutputStream("log.txt");
+			while(sc.hasNextLine()) {
+
+	 		}	
 			try {
 				outfile.close();
 				log.close();
@@ -44,7 +51,7 @@ public class CovertChannel {
 	 		e.printStackTrace();
 	 	}
 
-	 		
+	 	
 	}
 
 	
