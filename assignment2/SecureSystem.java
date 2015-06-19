@@ -34,7 +34,7 @@ public class SecureSystem {
 				String line = input.nextLine();
 				String[] params = line.split("\\s+");
 				InstructionObject io;
-				if (checkRead(params) || checkCreate(params) || checkDestroy) {
+				if (checkRead(params) || checkCreate(params) || checkDestroy(params)) {
 					io = new InstructionObject(params[0], params[1], params[2]);
 				} else if (checkWrite(params)) {
 					int value = Integer.parseInt(params[3]);
