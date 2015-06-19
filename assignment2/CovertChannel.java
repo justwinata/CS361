@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 
-
 public class CovertChannel {
 
 
@@ -37,15 +36,9 @@ public class CovertChannel {
 			Scanner sc = new Scanner(f);
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
 			is = new FileInputStream(f);
-<<<<<<< HEAD
-			FileOutputStream log = new FileOutputStream("log.txt");
-			IOUtils.copy(is,log);
-			while(sc.hasNextLine()) {
-=======
 			PrintWriter log = new PrintWriter ("log.txt");
 			sys.getRef().setVerbose(verbose, log);
 		//	while(sc.hasNextLine()) {
->>>>>>> 2acc28a709a31a6a0e09eb7c22b63679f365f074
 
 	 	//	}	
 			try {
