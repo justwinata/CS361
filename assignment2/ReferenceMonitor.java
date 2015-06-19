@@ -42,15 +42,15 @@ public class ReferenceMonitor {
 			}
 			printExecute(inObj);
 		} else if (inObj.getType().toLowerCase().equals("destroy")) {
-			/*String s = inObj.getObject();
+			String s = inObj.getObject();
 			int v = inObj.getValue();
-			if (!one.dominates(two)|| one.equals(two)) {
-				objectValues.put(s,v);
-			}*/
+			if (objectValues.containsKey(s) && (!one.dominates(two)|| one.equals(two))) {
+				objectValues.remove(s);
+			}
 			printExecute(inObj);
 		} else if (inObj.getType().toLowerCase().equals("create")) {
 			String s = inObj.getObject();
-			if (! (subjectValues.containsKey(s) || objectValues.containsKey(s) ) ) {
+			if (! (objectValues.containsKey(s) ) ) {
 				createObject(s, one);
 			}
 			printExecute(inObj);
