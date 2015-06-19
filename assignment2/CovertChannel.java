@@ -27,6 +27,7 @@ public class CovertChannel {
 			f = new File(args[0]);
 		}
 		sys = new SecureSystem();
+		sys.getRef().setVerbose(verbose);
 		sys.createSubject("Hal", high);
 		sys.createSubject("Lyle", low);
 

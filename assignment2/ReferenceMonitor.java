@@ -11,6 +11,7 @@ public class ReferenceMonitor {
 	private HashMap<String, SecurityLevel> objectLevels;
 	private HashMap<String, SecurityLevel> subjectLevels;
 	private InstructionObject inObj;
+	private boolean verbose;
 
 	public ReferenceMonitor() {
 		ObjectManager om = new ObjectManager();
@@ -33,36 +34,48 @@ public class ReferenceMonitor {
 			} else {
 				subjectValues.put(s,0);
 			}
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		} else if (inObj.getType().toLowerCase().equals("write")) {
 			String s = inObj.getObject();
 			int v = inObj.getValue();
 			if (!one.dominates(two)|| one.equals(two)) {
 				objectValues.put(s,v);
 			}
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		} else if (inObj.getType().toLowerCase().equals("destroy")) {
 			String s = inObj.getObject();
 			int v = inObj.getValue();
 			if (objectValues.containsKey(s) && (!one.dominates(two)|| one.equals(two))) {
 				objectValues.remove(s);
 			}
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		} else if (inObj.getType().toLowerCase().equals("create")) {
 			String s = inObj.getObject();
 			if (! (objectValues.containsKey(s) ) ) {
 				createObject(s, one);
 			}
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		} else if (inObj.getType().toLowerCase().equals("run")) {
 			/*String s = inObj.getObject();
 			int v = inObj.getValue();
 			if (!one.dominates(two)|| one.equals(two)) {
 				objectValues.put(s,v);
 			}*/
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		} else {
-			printExecute(inObj);
+			if (verbose) {
+				printExecute(inObj);
+			}
 		}
 			
 	}
@@ -97,6 +110,10 @@ public class ReferenceMonitor {
 	public void createObject(String s, SecurityLevel l) {
 		objectLevels.put(s,l);
 		objectValues.put(s,0);
+	}
+
+	public void setVerbose(boolean v) {
+		verbose = v;
 	}
 
 	class ObjectManager {
