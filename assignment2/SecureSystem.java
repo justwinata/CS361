@@ -19,11 +19,6 @@ public class SecureSystem {
 	 	SecureSystem sys = new SecureSystem();
 	 	SecurityLevel low  = SecurityLevel.LOW;
 		SecurityLevel high = SecurityLevel.HIGH;
-
-		sys.getRef().createSubject("Lyle", low);
-		sys.getRef().createSubject("Hal", high);
-		sys.getRef().createObject("LObj",low);
-		sys.getRef().createObject("HObj", high);
 	 	
 		// we'll use Scanner nextLine() to read each individual line in the file 
 		try {

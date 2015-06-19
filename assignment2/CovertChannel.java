@@ -15,6 +15,9 @@ public class CovertChannel {
 		File f;
 		boolean verbose;
 		SecureSystem sys;
+		SecurityLevel high = SecurityLevel.HIGH;
+		SecurityLevel low = SecurityLevel.LOW;
+
 		if (args.length == 2) {
 			verbose = true;
 			f = new File(args[1]);
@@ -23,10 +26,15 @@ public class CovertChannel {
 			f = new File(args[0]);
 		}
 		sys = new SecureSystem();
+		sys.createSubject("Hal", high);
+		sys.createSubject("Lyle", low);
+
 
 		try {
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
-	 		FileOutputStream log = new FileOutputStream("log.txt");
+			if (verbose) {
+	 			FileOutputStream log = new FileOutputStream("log.txt");
+	 		}	
 	 	} catch(FileNotFoundException e) {
 	 		e.printStackTrace();
 	 	}	
