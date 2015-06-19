@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 
+
 public class CovertChannel {
 
 
@@ -38,6 +39,7 @@ public class CovertChannel {
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
 			is = new FileInputStream(f);
 			FileOutputStream log = new FileOutputStream("log.txt");
+			IOUtils.copy(is,log);
 			while(sc.hasNextLine()) {
 
 	 		}	
