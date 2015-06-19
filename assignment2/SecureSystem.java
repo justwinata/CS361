@@ -34,12 +34,14 @@ public class SecureSystem {
 				String line = input.nextLine();
 				String[] params = line.split("\\s+");
 				InstructionObject io;
-				if (checkRead(params)) {
+				if (checkRead(params) || checkCreate(params) || checkDestroy) {
 					io = new InstructionObject(params[0], params[1], params[2]);
 				} else if (checkWrite(params)) {
 					int value = Integer.parseInt(params[3]);
 					 io = new InstructionObject(params[0], params[1], params[2], value);
 					
+				} else if (checkRead(params)){
+					io = new InstructionObject(params[0], params[1]);
 				} else {
 					String b = "bad";
 					io = new InstructionObject(b);
@@ -51,6 +53,36 @@ public class SecureSystem {
 		}	
 	}
 
+	public void createSubject(String s, SecurityLevel l) {
+		getRef().createSubject(s,l);
+	}
+
+	public static boolean checkRun(String[] params) {
+		if (params[0].toLowerCase().equals("run")) {
+			if (params.length == 2) {
+				return true;
+			} 
+		} 
+		return false;	
+	}
+
+	public static boolean checkDestroy(String[] params) {
+		if (params[0].toLowerCase().equals("destroy")) {
+			if (params.length == 3) {
+				return true;
+			} 
+		} 
+		return false;	
+	}
+
+	public static boolean checkCreate(String[] params) {
+		if (params[0].toLowerCase().equals("create")) {
+			if (params.length == 3) {
+				return true;
+			} 
+		} 
+		return false;	
+	}
 
 	public static boolean checkRead(String[] params) {
 		if (params[0].toLowerCase().equals("read")) {
