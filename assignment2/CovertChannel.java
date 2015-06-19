@@ -35,15 +35,25 @@ public class CovertChannel {
 		try {
 			Scanner sc = new Scanner(f);
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
+			FileOutputStream outfilelog = new FileOutputStream("log.txt");
 			is = new FileInputStream(f);
-			PrintWriter log = new PrintWriter ("log.txt");
-			sys.getRef().setVerbose(verbose, log);
-		//	while(sc.hasNextLine()) {
-
-	 	//	}	
+			int numread;
+			byte[] buffer = new byte[1024];
+			try {
+			while ( (numread = is.read(buffer)) != -1) {
+          		outfile.write(buffer, 0, numread);
+          		outfilelog.write(buffer, 0, numread);
+      		}
+      	} catch(IOException io) {
+      		io.printStackTrace();
+      	}
+			//PrintWriter log = new PrintWriter ("log.txt");
+			//sys.getRef().setVerbose(verbose, log);
+		
 			try {
 				outfile.close();
-				log.close();
+				//log.close();
+				outfilelog.close();
 			} catch(IOException io) {
 				io.printStackTrace();
 			}
