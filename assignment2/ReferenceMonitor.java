@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.HashMap;
-import java.io.File;
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 
 public class ReferenceMonitor {
@@ -12,6 +12,7 @@ public class ReferenceMonitor {
 	private HashMap<String, SecurityLevel> subjectLevels;
 	private InstructionObject inObj;
 	private boolean verbose;
+	private PrintWriter writer;
 
 	public ReferenceMonitor() {
 		ObjectManager om = new ObjectManager();
@@ -83,22 +84,22 @@ public class ReferenceMonitor {
 	public void printExecute (InstructionObject io) {
 		
 		if (io.getType().toLowerCase().equals("read")) {
-			System.out.println("READ " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
+			writer.println("READ " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
 		}
 		else if (io.getType().toLowerCase().equals("create")) {
-			System.out.println("CREATE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
+			writer.println("CREATE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
 		}
 		else if (io.getType().toLowerCase().equals("destroy")) {
-			System.out.println("DESTROY " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
+			writer.println("DESTROY " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
 		}
 		else if (io.getType().toLowerCase().equals("write")) {
-			System.out.println("WRITE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase() + " " + io.getValue() );
+			writer.println("WRITE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase() + " " + io.getValue() );
 		}
 		else if (io.getType().toLowerCase().equals("run")) {
-			System.out.println("RUN " + io.getSubject().toUpperCase());
+			writer.println("RUN " + io.getSubject().toUpperCase());
 		}
 		else  { 
-			System.out.println("Bad Instruction");
+			writer.println("Bad Instruction");
 		}
 	}
 
@@ -112,8 +113,9 @@ public class ReferenceMonitor {
 		objectValues.put(s,0);
 	}
 
-	public void setVerbose(boolean v) {
+	public void setVerbose(boolean v, PrintWriter pw) {
 		verbose = v;
+		writer = pw;
 	}
 
 	class ObjectManager {
