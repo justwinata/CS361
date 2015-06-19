@@ -50,4 +50,4 @@ We finished the most/half/one quarter of this assignment. There are some bugs in
 1		Pride and Prejudice		717,575 bytes	YYY bits/ms
 2		Metamorphosis			141,419 bytes	YYY bits/ms
 3		TestFile				211 bytes		YYY bits/ms
-4		File4					XXX bytes		YYY bits/ms
+4		TestFile0				425 bytes		YYY bits/ms
