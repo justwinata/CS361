@@ -14,6 +14,11 @@ public class InstructionObject {
 
 		}
 
+		public InstructionObject(String type, String subjname) {
+			instruction = type;
+			subj = subjname;
+		}
+
 		public InstructionObject(String type) {
 			instruction = type;
 		}

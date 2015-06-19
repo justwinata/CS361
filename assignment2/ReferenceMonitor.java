@@ -41,6 +41,26 @@ public class ReferenceMonitor {
 				objectValues.put(s,v);
 			}
 			printExecute(inObj);
+		} else if (inObj.getType().toLowerCase().equals("destroy")) {
+			/*String s = inObj.getObject();
+			int v = inObj.getValue();
+			if (!one.dominates(two)|| one.equals(two)) {
+				objectValues.put(s,v);
+			}*/
+			printExecute(inObj);
+		} else if (inObj.getType().toLowerCase().equals("create")) {
+			String s = inObj.getObject();
+			if (! (subjectValues.containsKey(s) || objectValues.containsKey(s) ) ) {
+				createObject(s, one)
+			}
+			printExecute(inObj);
+		} else if (inObj.getType().toLowerCase().equals("run")) {
+			/*String s = inObj.getObject();
+			int v = inObj.getValue();
+			if (!one.dominates(two)|| one.equals(two)) {
+				objectValues.put(s,v);
+			}*/
+			printExecute(inObj);
 		} else {
 			printExecute(inObj);
 		}
@@ -50,10 +70,19 @@ public class ReferenceMonitor {
 	public void printExecute (InstructionObject io) {
 		
 		if (io.getType().toLowerCase().equals("read")) {
-			System.out.println(io.getSubject().toLowerCase() + " reads " + io.getObject().toLowerCase());
+			System.out.println("READ " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
+		}
+		else if (io.getType().toLowerCase().equals("create")) {
+			System.out.println("CREATE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
+		}
+		else if (io.getType().toLowerCase().equals("destroy")) {
+			System.out.println("DESTROY " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase());
 		}
 		else if (io.getType().toLowerCase().equals("write")) {
-			System.out.println(io.getSubject().toLowerCase() + " writes value " + io.getValue() + " to " + io.getObject().toLowerCase());
+			System.out.println("WRITE " + io.getSubject().toUpperCase() + " " + io.getObject().toUpperCase() + " " + io.getValue() );
+		}
+		else if (io.getType().toLowerCase().equals("run")) {
+			System.out.println("RUN " + io.getSubject().toUpperCase());
 		}
 		else  { 
 			System.out.println("Bad Instruction");
@@ -61,25 +90,12 @@ public class ReferenceMonitor {
 		printState();
 	}
 
-	
-	public void printState () {
-		System.out.println("The current state is:");
-		System.out.println("   " + "LObj" + " has value: " + objectValues.get("LObj"));
-		System.out.println("   " + "HObj" + " has value: " + objectValues.get("HObj"));
-		System.out.println("   " + "Lyle" + " has recently read: " + subjectValues.get("Lyle"));
-		System.out.println("   " + "Hal" + " has recently read: " + subjectValues.get("Hal"));
-		System.out.println();
-	}
-	
-	
 	public void createSubject(String s, SecurityLevel l) {
-		//s = s.toLowerCase();
 		subjectLevels.put(s,l);
 		subjectValues.put(s, 0);
 	}
 
 	public void createObject(String s, SecurityLevel l) {
-		//s = s.toLowerCase();
 		objectLevels.put(s,l);
 		objectValues.put(s,0);
 	}
