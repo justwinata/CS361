@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.io.PrintWriter;
 
 public class CovertChannel {
 
@@ -29,15 +30,14 @@ public class CovertChannel {
 			f = new File(args[0]);
 		}
 		sys = new SecureSystem();
-		sys.getRef().setVerbose(verbose);
 		sys.createSubject("Hal", high);
 		sys.createSubject("Lyle", low);
-
 		try {
 			Scanner sc = new Scanner(f);
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
 			is = new FileInputStream(f);
-			FileOutputStream log = new FileOutputStream("log.txt");
+			PrintWriter log = new PrintWriter ("log.txt");
+			sys.getRef().setVerbose(verbose, log);
 			while(sc.hasNextLine()) {
 
 	 		}	
@@ -50,7 +50,6 @@ public class CovertChannel {
 	 	} catch(FileNotFoundException e) {
 	 		e.printStackTrace();
 	 	}
-
 	 	
 	}
 
