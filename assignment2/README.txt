@@ -40,7 +40,7 @@ Metamorphosis:
 	Source:	http://www.gutenberg.org/cache/epub/5200/pg5200.txt
 	Instructed in the specs to include this book as a test file.
 Test:
-	Source:	http://www.directlyrics.com/taylor-swift-blank-spaces-lyrics.html
+	Source:	http://genius.com/Taylor-swift-blank-space-lyrics
 
 [Finish]
 We finished one quarter of this assignment.In SecureSytem.java we implemented methods to check for CREATE, DESTROY, and RUN instructions. There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
