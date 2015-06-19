@@ -50,6 +50,7 @@ public class CovertChannel {
 	 	} catch(FileNotFoundException e) {
 	 		e.printStackTrace();
 	 	}
+	 	//sys.getRef().addInstruction()
 	 	System.exit(1);
 	}
 
