@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class CovertChannel {
@@ -29,15 +30,20 @@ public class CovertChannel {
 		sys.createSubject("Hal", high);
 		sys.createSubject("Lyle", low);
 
-
 		try {
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
-			if (verbose) {
-	 			FileOutputStream log = new FileOutputStream("log.txt");
-	 		}	
+			FileOutputStream log = new FileOutputStream("log.txt");
+			try {
+				outfile.close();
+				log.close();
+			} catch(IOException io) {
+				io.printStackTrace();
+			}
 	 	} catch(FileNotFoundException e) {
 	 		e.printStackTrace();
-	 	}	
+	 	}
+
+	 		
 	}
 
 	
