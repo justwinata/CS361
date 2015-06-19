@@ -38,9 +38,9 @@ public class CovertChannel {
 			is = new FileInputStream(f);
 			PrintWriter log = new PrintWriter ("log.txt");
 			sys.getRef().setVerbose(verbose, log);
-			while(sc.hasNextLine()) {
+		//	while(sc.hasNextLine()) {
 
-	 		}	
+	 	//	}	
 			try {
 				outfile.close();
 				log.close();
@@ -50,7 +50,7 @@ public class CovertChannel {
 	 	} catch(FileNotFoundException e) {
 	 		e.printStackTrace();
 	 	}
-	 	
+	 	System.exit(1);
 	}
 
 	
