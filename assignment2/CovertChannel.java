@@ -36,7 +36,7 @@ public class CovertChannel {
 			Scanner sc = new Scanner(f);
 			FileOutputStream outfile = new FileOutputStream(f.getName() + ".out");
 			FileOutputStream outfilelog = new FileOutputStream("log.txt");
-			is = new FileInputStream(f);
+			is = new FileInputStream(f); 
 			int numread;
 			byte[] buffer = new byte[1024];
 			try {
