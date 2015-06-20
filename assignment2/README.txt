@@ -5,6 +5,8 @@ CSACCOUNT: elaiho; justwin;
 EMAIL: elaiho@cs.utexas.edu; justwin@cs.utexas.edu; 
 
 [Program 2]
+There are 5 java files.In SecureSytem.java we implemented methods to check for CREATE, DESTROY, and RUN instructions. The CovertChannel is the most importatnt java file. In CovertChannel we implemented main to read two args and check wheter a "v" is present for the verbose. We then created Hal and Lyle subjects. We implemented a InputStream and OutputStream to convert a file to a ".out" file. To complie our program, you need to use "javac *.java". To run our program, you need to use "java SecureSystem *inputname" *one of the file names
+
 
 [Description]
 
@@ -40,12 +42,13 @@ Metamorphosis:
 	Source:	http://www.gutenberg.org/cache/epub/5200/pg5200.txt
 	Instructed in the specs to include this book as a test file.
 TestFile:
-	Source:	Copied from our assignment1, the instructionList test file used
+	Source:	http://genius.com/Taylor-swift-blank-space-lyrics
 
 [Finish]
-We finished the most/half/one quarter of this assignment. There are some bugs in function/method A in XXX.java file. Some special test cases won't work, the reason is ... For YYY.java, we don't know how to implement the sort method.
+We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
 
 [Results Summary]
+No results due to lack of completion.
 [No.]	[Document Name] 		[Size] 		 	[Bandwidth]
 1		Pride and Prejudice		717,575 bytes	YYY bits/ms
 2		Metamorphosis			141,419 bytes	YYY bits/ms
