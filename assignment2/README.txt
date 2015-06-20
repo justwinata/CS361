@@ -41,7 +41,7 @@ Pride & Prejudice:
 Metamorphosis:
 	Source:	http://www.gutenberg.org/cache/epub/5200/pg5200.txt
 	Instructed in the specs to include this book as a test file.
-Test:
+TestFile:
 	Source:	http://genius.com/Taylor-swift-blank-space-lyrics
 
 [Finish]
