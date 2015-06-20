@@ -46,7 +46,7 @@ TestFile:
 	A text file with all the names of hands in the card game Poker
 
 [Finish]
-We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused and we ran out of time. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
+We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to implement the reading of streamed bits over the channel. This line cofused us the most: "Your program will read the file contents (probably one byte at a time using a ByteArrayInputStream), convert each byte to 8 bits, send them through the covert channel, reconstruct the byte on the receiving side and write it out to a file. The idea is to transfer the contents of an arbitrary ASCII file over the channel." The whole process had us confused and we ran out of time. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
 
 [Results Summary]
 No results due to lack of completion.
