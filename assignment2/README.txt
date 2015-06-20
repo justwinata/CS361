@@ -45,7 +45,7 @@ TestFile:
 	Source:	http://genius.com/Taylor-swift-blank-space-lyrics
 
 [Finish]
-We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
+We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused and we ran out of time. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
 
 [Results Summary]
 No results due to lack of completion.
