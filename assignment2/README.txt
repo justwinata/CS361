@@ -42,10 +42,11 @@ Metamorphosis:
 	Source:	http://www.gutenberg.org/cache/epub/5200/pg5200.txt
 	Instructed in the specs to include this book as a test file.
 TestFile:
-	Source:	http://genius.com/Taylor-swift-blank-space-lyrics
+	Source:	http://textfiles.com/programming/pokerhan.pro
+	A text file with all the names of hands in the card game Poker
 
 [Finish]
-We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
+We finished one quarter of this assignment.There are some problems with the scope of how we passed Instruction objects in our SecureSystem.java file. We were not sure how to inplemnt the reading of streamed bits over the channel. The whole process had us confused and we ran out of time. The program compiles and runs and makes a log.txt and inputfilename.out, but not properly. 
 
 [Results Summary]
 No results due to lack of completion.
