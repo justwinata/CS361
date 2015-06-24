@@ -2,12 +2,14 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
+
 public class Encoder {
+
+private static char[] letters = new char[26];
+private static int[] frequencies = new int[26];
 
 	public static void main(String[] args) {
 
-		private char[] letters = new char[26];
-		private int[] frequencies = new int[26];
 
 		for (char i = 'A'; i <= 'Z'; i++) {
 			letters[i-'A'] = i;
@@ -26,5 +28,15 @@ public class Encoder {
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
 		}	
+	}
+
+	private static double calcEntropy(int[] freq) {
+		double log2 = 0.0;
+		double total = 0.0;
+		for (int i = 0; i < freq.length; i++) {
+			log2 = Math.log(freq[i]) / Math.log(2);
+			total = total + ((1 / freq[i]) * log2);
+		}
+		return (-1 * total);
 	}
 }
