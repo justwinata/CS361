@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 
 public class Encoder {
 
-private static char[] letters = new char[26];
-private static int[] frequencies = new int[26];
+	private static char[] letters = new char[26];
+	private static int[] frequencies = new int[26];
 
 	public static void main(String[] args) {
 
