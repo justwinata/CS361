@@ -2,7 +2,6 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
-
 public class Encoder {
 
 private static char[] letters = new char[26];
@@ -27,7 +26,11 @@ private static int[] frequencies = new int[26];
 			}
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
-		}	
+		}
+		
+        System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
+		HuffmanTree one = Huffman.buildTree(frequencies);
+		Huffman.printCodes(one, new StringBuffer());
 	}
 
 	private static double calcEntropy(int[] freq) {
