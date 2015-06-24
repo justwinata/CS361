@@ -76,11 +76,15 @@ public class Huffman {
     }
  
     public static void main(String[] args) {
-        String test = "this is an example for huffman encoding";
+
+    }
+
+    public static void execute(String in) {
+        String test = in;
  
         // we will assume that all our characters will have
         // code less than 256, for simplicity
-        int[] charFreqs = new int[256];
+        int[] charFreqs = new int[256]; 
         // read each character and record the frequencies
         for (char c : test.toCharArray())
             charFreqs[c]++;
