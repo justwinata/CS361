@@ -1,9 +1,8 @@
-UTEID:
-FIRSTNAME:
-LASTNAME:
-CSACCOUNT:
-EMAIL:
-
+UTEID: ee4826; jw34846; 
+FIRSTNAME: Efosa; Justin; 
+LASTNAME: Elaiho; Winata;
+CSACCOUNT: elaiho; justwin;
+EMAIL: elaiho@cs.utexas.edu; justwin@cs.utexas.edu; 
 
 [Program 3]
 [Description]
