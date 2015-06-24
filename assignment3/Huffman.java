@@ -29,7 +29,7 @@ class HuffmanNode extends HuffmanTree {
     }
 }
  
-public class HuffmanCode {
+public class Huffman {
     // input is an array of frequencies, indexed by character code
     public static HuffmanTree buildTree(int[] charFreqs) {
         PriorityQueue<HuffmanTree> trees = new PriorityQueue<HuffmanTree>();
