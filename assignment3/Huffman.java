@@ -52,11 +52,12 @@ public class Huffman {
         return trees.poll();
     }
  
-    public static void printCodes(HuffmanTree tree, StringBuffer prefix) {
+    public static void printCodes(HuffmanTree tree, StringBuffer prefix, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
         assert tree != null;
         if (tree instanceof HuffmanLeaf) {
             HuffmanLeaf leaf = (HuffmanLeaf)tree;
- 
+            chartocode.put(leaf.value, prefix.toString());
+            codetochar.put(prefix.toString(), leaf.value); 
             // print out character, frequency, and code for this leaf (which is just the prefix)
             System.out.println(leaf.value + "\t" + leaf.frequency + "\t" + prefix);
  
@@ -65,12 +66,12 @@ public class Huffman {
  
             // traverse left
             prefix.append('0');
-            printCodes(node.left, prefix);
+            printCodes(node.left, prefix, codetochar, chartocode);
             prefix.deleteCharAt(prefix.length()-1);
  
             // traverse right
             prefix.append('1');
-            printCodes(node.right, prefix);
+            printCodes(node.right, prefix, codetochar, chartocode);
             prefix.deleteCharAt(prefix.length()-1);
         }
     }
@@ -79,7 +80,7 @@ public class Huffman {
 
     }
 
-    public static void execute(String in) {
+    public static void execute(String in, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
         String test = in;
  
         // we will assume that all our characters will have
@@ -94,6 +95,6 @@ public class Huffman {
  
         // print out results
         System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-        printCodes(tree, new StringBuffer());
+        printCodes(tree, new StringBuffer(), codetochar, chartocode);
     }
 }
