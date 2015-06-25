@@ -49,7 +49,8 @@ public class Encoder {
 		System.out.println(in);
         Huffman.execute(in.toString(), codetochar, chartocode);
         generateTestText(k, in.toString());
-        generateEncodingOne();
+        encodeOne();
+        decodeOne();
 	}
 
 	private static double calcEntropy(int[] freq) {
@@ -86,7 +87,7 @@ public class Encoder {
 	 	}
 	}
 
-	private static void generateEncodingOne () {
+	private static void encodeOne () {
 		StringBuilder enc1 = new StringBuilder();
 		try {
 			File f = new File("testText");
@@ -103,6 +104,37 @@ public class Encoder {
 		try {
 			PrintWriter w = new PrintWriter("testText.enc1", "UTF-8");
 			w.print(enc1);
+			try {
+				w.close();
+			} catch (NullPointerException npe) {
+				npe.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException uee) {
+			uee.printStackTrace();
+		}
+	}
+	private static void decodeOne () {
+		StringBuilder dec1 = new StringBuilder();
+		StringBuilder check = new StringBuilder();
+		try {
+			File f = new File("testText.enc1");
+			Scanner sc = new Scanner (f);
+			sc.useDelimiter("");
+			while (sc.hasNext()) {
+				check.append(sc.next());
+				if (codetochar.containsKey(check.toString())){
+					dec1.append(codetochar.get(check.toString()));
+					check.delete(0, check.length());
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			PrintWriter w = new PrintWriter("testText.dec1", "UTF-8");
+			w.print(dec1);
 			try {
 				w.close();
 			} catch (NullPointerException npe) {
