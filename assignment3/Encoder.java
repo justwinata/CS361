@@ -9,22 +9,28 @@ public class Encoder {
 
 	private static char[] letters = new char[26];
 	private static int[] frequencies = new int[26];
+	private static String[] letters2 = new String[676];
+	private static int[] frequencies2 = new int[676];
 	public static int denom = 0;
 	public static HashMap<Character,String> chartocode;
 	public static HashMap<String,Character> codetochar;
+	public static HashMap<Character,String> chartocode2;
+	public static HashMap<String,Character> codetochar2;
 
 
 	public static void main(String[] args) {
+		File f = new File(args[0]);
+		int k = Integer.parseInt(args[1]);
 
-	chartocode = new HashMap<Character,String>();
-	codetochar = new HashMap<String,Character>();
+		chartocode = new HashMap<Character,String>();
+		codetochar = new HashMap<String,Character>();
+		chartocode2 = new HashMap<Character,String>();
+		codetochar2 = new HashMap<String,Character>();
 
 		for (char i = 'A'; i <= 'Z'; i++) {
 			letters[i-'A'] = i;
 		}
 
-		File f = new File(args[0]);
-		int k = Integer.parseInt(args[1]);
 		try {
 			Scanner sc = new Scanner(f);
 			int index = -1;
@@ -38,20 +44,50 @@ public class Encoder {
 		} catch(FileNotFoundException e) { 
 			e.printStackTrace(); 
 		}
+		
 		StringBuilder in = new StringBuilder();
 		for (int i = 0; i < frequencies.length; i++) {
 			for (int j = 0; j < frequencies[i]; j++) {
 				in.append(letters[i]);
 			}
 		}
+        
         double entropy = calcEntropy(frequencies);
         System.out.println("Computed Optimal Entropy: " + entropy);
-		System.out.println(in);
+		
         Huffman.execute(in.toString(), codetochar, chartocode);
+
         generateTestText(k, in.toString());
+
         encodeOne();
+
         decodeOne();
-	}
+
+        int letters2idx = 0;
+        for (char i = 'A'; i <= 'Z'; i++) {
+        	for (char j = 'A'; j <= 'Z'; j++) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(i);
+				sb.append(j);
+				letters2[letters2idx] = sb.toString();
+				frequencies2[letters2idx] = frequencies[i - 'A'] * frequencies[j - 'A'];
+if (frequencies2[letters2idx] != 0) {
+System.out.println(letters2[letters2idx] + ": " + frequencies2[letters2idx]);
+}
+				letters2idx++;
+			}
+        }
+
+        StringBuilder in2 = new StringBuilder();
+		for (int i = 0; i < frequencies2.length; i++) {
+			for (int j = 0; j < frequencies2[i]; j++) {
+				in2.append(letters2[i]);
+			}
+		}
+		System.out.println(in2);
+
+        Huffman.execute(in2.toString(), codetochar2, chartocode2);
+    }
 
 	private static double calcEntropy(int[] freq) {
 		double log2 = 0.0;
