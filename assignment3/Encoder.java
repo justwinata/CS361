@@ -12,10 +12,13 @@ public class Encoder {
 	private static String[] letters2 = new String[676];
 	private static int[] frequencies2 = new int[676];
 	public static int denom = 0;
+	public static int denom2 = 0;
 	public static HashMap<Character,String> chartocode;
 	public static HashMap<String,Character> codetochar;
-	public static HashMap<Character,String> chartocode2;
-	public static HashMap<String,Character> codetochar2;
+	public static HashMap<String,String> chartocode2;
+	public static HashMap<String,String> codetochar2;
+	public static HashMap<Character,String> chartopair;
+	public static HashMap<String,Character> pairtochar;
 
 
 	public static void main(String[] args) {
@@ -24,8 +27,10 @@ public class Encoder {
 
 		chartocode = new HashMap<Character,String>();
 		codetochar = new HashMap<String,Character>();
-		chartocode2 = new HashMap<Character,String>();
-		codetochar2 = new HashMap<String,Character>();
+		chartocode2 = new HashMap<String,String>();
+		codetochar2 = new HashMap<String,String>();
+		chartopair = new HashMap<Character,String>();
+		pairtochar = new HashMap<String,Character>();
 
 		for (char i = 'A'; i <= 'Z'; i++) {
 			letters[i-'A'] = i;
@@ -64,6 +69,7 @@ public class Encoder {
         decodeOne();
 
         int letters2idx = 0;
+        char ctp = '0';
         for (char i = 'A'; i <= 'Z'; i++) {
         	for (char j = 'A'; j <= 'Z'; j++) {
 				StringBuilder sb = new StringBuilder();
@@ -71,22 +77,23 @@ public class Encoder {
 				sb.append(j);
 				letters2[letters2idx] = sb.toString();
 				frequencies2[letters2idx] = frequencies[i - 'A'] * frequencies[j - 'A'];
-if (frequencies2[letters2idx] != 0) {
-System.out.println(letters2[letters2idx] + ": " + frequencies2[letters2idx]);
-}
+				if (frequencies2[letters2idx] != 0) {
+					chartopair.put(ctp, letters2[letters2idx]);
+					pairtochar.put(letters2[letters2idx], ctp);
+					ctp++;
+				}
+				denom2 += frequencies2[letters2idx];
 				letters2idx++;
 			}
         }
-
         StringBuilder in2 = new StringBuilder();
 		for (int i = 0; i < frequencies2.length; i++) {
 			for (int j = 0; j < frequencies2[i]; j++) {
-				in2.append(letters2[i]);
+				in2.append(pairtochar.get(letters2[i]));
 			}
 		}
-		System.out.println(in2);
-
-        Huffman.execute(in2.toString(), codetochar2, chartocode2);
+        Huffman.execute(in2.toString(), codetochar2, chartocode2, chartopair);
+        encodeTwo();
     }
 
 	private static double calcEntropy(int[] freq) {
@@ -171,6 +178,35 @@ System.out.println(letters2[letters2idx] + ": " + frequencies2[letters2idx]);
 		try {
 			PrintWriter w = new PrintWriter("testText.dec1", "UTF-8");
 			w.print(dec1);
+			try {
+				w.close();
+			} catch (NullPointerException npe) {
+				npe.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException uee) {
+			uee.printStackTrace();
+		}
+	}
+	private static void encodeTwo () {
+		StringBuilder enc2 = new StringBuilder();
+		StringBuilder pair = new StringBuilder();
+		try {
+			File f = new File("testText");
+			Scanner sc = new Scanner (f);
+			sc.useDelimiter("");
+			while (sc.hasNext()) {
+				pair.append(sc.next());
+				pair.append(sc.next());
+				enc2.append(chartocode2.get(pair));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			PrintWriter w = new PrintWriter("testText.enc2", "UTF-8");
+			w.print(enc2);
 			try {
 				w.close();
 			} catch (NullPointerException npe) {
