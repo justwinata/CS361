@@ -30,6 +30,8 @@ class HuffmanNode extends HuffmanTree {
 }
  
 public class Huffman {
+    public static int bitcount = 0;
+    public static int bitcount2 = 0;
     // input is an array of frequencies, indexed by character code
     public static HuffmanTree buildTree(int[] charFreqs) {
         PriorityQueue<HuffmanTree> trees = new PriorityQueue<HuffmanTree>();
@@ -52,12 +54,13 @@ public class Huffman {
         return trees.poll();
     }
  
-    public static void printCodes(HuffmanTree tree, StringBuffer prefix, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
+    public static int printCodes(HuffmanTree tree, StringBuffer prefix, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
         assert tree != null;
         if (tree instanceof HuffmanLeaf) {
             HuffmanLeaf leaf = (HuffmanLeaf)tree;
             chartocode.put(leaf.value, prefix.toString());
             codetochar.put(prefix.toString(), leaf.value); 
+            bitcount += prefix.length();
             // print out character, frequency, and code for this leaf (which is just the prefix)
             System.out.println(leaf.value + "\t" + leaf.frequency + "\t" + prefix);
  
@@ -74,13 +77,14 @@ public class Huffman {
             printCodes(node.right, prefix, codetochar, chartocode);
             prefix.deleteCharAt(prefix.length()-1);
         }
+        return bitcount;
     }
  
     public static void main(String[] args) {
 
     }
 
-    public static void execute(String in, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
+    public static int execute(String in, HashMap<String,Character> codetochar, HashMap<Character,String> chartocode) {
         String test = in;
  
         // we will assume that all our characters will have
@@ -92,13 +96,13 @@ public class Huffman {
  
         // build tree
         HuffmanTree tree = buildTree(charFreqs);
- 
+        
         // print out results
-        System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-        printCodes(tree, new StringBuffer(), codetochar, chartocode);
+        System.out.println("SYMBOL\tFREQ\tHUFFMAN CODE");
+        return printCodes(tree, new StringBuffer(), codetochar, chartocode);
     }
 
-    public static void execute(String in, HashMap<String,String> codetochar, HashMap<String,String> chartocode, HashMap<Character,String> chartopair) {
+    public static int execute2(String in, HashMap<String,String> codetochar, HashMap<String,String> chartocode, HashMap<Character,String> chartopair) {
         String test = in;
  
         // we will assume that all our characters will have
@@ -110,18 +114,18 @@ public class Huffman {
  
         // build tree
         HuffmanTree tree = buildTree(charFreqs);
- 
         // print out results
-        System.out.println("SYMBOL\tWEIGHT\tHUFFMAN CODE");
-        printCodes2(tree, new StringBuffer(), codetochar, chartocode, chartopair);
+        System.out.println("SYMBOL\tFREQ\tHUFFMAN CODE");
+        return printCodes2(tree, new StringBuffer(), codetochar, chartocode, chartopair);
     }
 
-    public static void printCodes2(HuffmanTree tree, StringBuffer prefix, HashMap<String,String> codetochar, HashMap<String,String> chartocode, HashMap<Character,String> chartopair) {
+    public static int printCodes2(HuffmanTree tree, StringBuffer prefix, HashMap<String,String> codetochar, HashMap<String,String> chartocode, HashMap<Character,String> chartopair) {
         assert tree != null;
         if (tree instanceof HuffmanLeaf) {
             HuffmanLeaf leaf = (HuffmanLeaf)tree;
             chartocode.put(chartopair.get(leaf.value), prefix.toString());
             codetochar.put(prefix.toString(), chartopair.get(leaf.value)); 
+            bitcount2 += prefix.length();
             // print out character, frequency, and code for this leaf (which is just the prefix)
             System.out.println(chartopair.get(leaf.value) + "\t" + leaf.frequency + "\t" + prefix);
  
@@ -138,6 +142,7 @@ public class Huffman {
             printCodes2(node.right, prefix, codetochar, chartocode, chartopair);
             prefix.deleteCharAt(prefix.length()-1);
         }
+        return bitcount2;
     }
 
 }

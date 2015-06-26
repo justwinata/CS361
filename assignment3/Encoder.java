@@ -19,6 +19,10 @@ public class Encoder {
 	public static HashMap<String,String> codetochar2;
 	public static HashMap<Character,String> chartopair;
 	public static HashMap<String,Character> pairtochar;
+	public static int bitcount = 0;
+	public static int symcount = 0;
+	public static int bitcount2 = 0;
+	public static int symcount2 = 0;
 
 
 	public static void main(String[] args) {
@@ -43,7 +47,10 @@ public class Encoder {
 				index++;
 				int num;
 				num = sc.nextInt();
-				frequencies[index] = num;
+				if (num != 0) {
+					frequencies[index] = num;
+					symcount++;
+				}
 				denom += num;
 			}
 		} catch(FileNotFoundException e) { 
@@ -57,16 +64,19 @@ public class Encoder {
 			}
 		}
         
-        double entropy = calcEntropy(frequencies);
+        double entropy = calcOptimalEntropy(frequencies);
         System.out.println("Computed Optimal Entropy: " + entropy);
 		
-        Huffman.execute(in.toString(), codetochar, chartocode);
+        bitcount = Huffman.execute(in.toString(), codetochar, chartocode);
 
         generateTestText(k, in.toString());
 
         encodeOne();
 
         decodeOne();
+
+        double avg1 = calcAvgBit(symcount, bitcount);
+        System.out.println("Average bits per symbol (1-symbol encoding): " + avg1);
 
         int letters2idx = 0;
         char ctp = '0';
@@ -81,6 +91,7 @@ public class Encoder {
 					chartopair.put(ctp, letters2[letters2idx]);
 					pairtochar.put(letters2[letters2idx], ctp);
 					ctp++;
+					symcount2++;
 				}
 				denom2 += frequencies2[letters2idx];
 				letters2idx++;
@@ -92,11 +103,17 @@ public class Encoder {
 				in2.append(pairtochar.get(letters2[i]));
 			}
 		}
-        Huffman.execute(in2.toString(), codetochar2, chartocode2, chartopair);
+        bitcount2 = Huffman.execute2(in2.toString(), codetochar2, chartocode2, chartopair);
+
         encodeTwo();
+
+        decodeTwo();
+
+        double avg2 = calcAvgBit2(symcount2, bitcount2);
+        System.out.println("Average bits per symbol (2-symbol encoding): " + avg2);
     }
 
-	private static double calcEntropy(int[] freq) {
+	private static double calcOptimalEntropy(int[] freq) {
 		double log2 = 0.0;
 		double total = 0.0;
 		for (int i = 0; i < freq.length && freq[i] != 0; i++) {
@@ -107,6 +124,16 @@ public class Encoder {
 		}
 		return (-1 * total);
 	}
+
+	private static double calcAvgBit (int symbols, int bits) {
+		return (((double)bits) / symbols);
+	}
+
+	private static double calcAvgBit2 (int symbols, int bits) {
+		return (((double)bits) / (2 * symbols));
+	}
+
+
 
 	private static void generateTestText(int k, String in) {
 		StringBuilder testfile = new StringBuilder();
@@ -199,7 +226,8 @@ public class Encoder {
 			while (sc.hasNext()) {
 				pair.append(sc.next());
 				pair.append(sc.next());
-				enc2.append(chartocode2.get(pair));
+				enc2.append(chartocode2.get(pair.toString()));
+				pair.delete(0, pair.length());
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -207,6 +235,37 @@ public class Encoder {
 		try {
 			PrintWriter w = new PrintWriter("testText.enc2", "UTF-8");
 			w.print(enc2);
+			try {
+				w.close();
+			} catch (NullPointerException npe) {
+				npe.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException uee) {
+			uee.printStackTrace();
+		}
+	}
+	private static void decodeTwo () {
+		StringBuilder dec2 = new StringBuilder();
+		StringBuilder check = new StringBuilder();
+		try {
+			File f = new File("testText.enc2");
+			Scanner sc = new Scanner (f);
+			sc.useDelimiter("");
+			while (sc.hasNext()) {
+				check.append(sc.next());
+				if (codetochar2.containsKey(check.toString())){
+					dec2.append(codetochar2.get(check.toString()));
+					check.delete(0, check.length());
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			PrintWriter w = new PrintWriter("testText.dec2", "UTF-8");
+			w.print(dec2);
 			try {
 				w.close();
 			} catch (NullPointerException npe) {
