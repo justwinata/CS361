@@ -230,8 +230,12 @@ public class Encoder {
 			sc.useDelimiter("");
 			while (sc.hasNext()) {
 				pair.append(sc.next());
-				pair.append(sc.next());
-				enc2.append(chartocode2.get(pair.toString()));
+				if (sc.hasNext()) {
+					pair.append(sc.next());
+					enc2.append(chartocode2.get(pair.toString()));
+				} else {
+					enc2.append(chartocode.get(pair.charAt(0)));
+				}
 				pair.delete(0, pair.length());
 			}
 		} catch (FileNotFoundException e) {
@@ -264,6 +268,9 @@ public class Encoder {
 					dec2.append(codetochar2.get(check.toString()));
 					check.delete(0, check.length());
 				}
+			}
+			if (codetochar.containsKey(check.toString())) {
+				dec2.append(codetochar.get(check.toString()));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
