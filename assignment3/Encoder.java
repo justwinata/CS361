@@ -111,9 +111,10 @@ public class Encoder {
         decodeTwo();
 
         double avg2 = calcAvgBit2(symcount2, bitcount2);
+        double entropy2 = calcOptimalEntropy(frequencies2);
+        System.out.println("Calculated optimal entropy: " + entropy2);
         System.out.println("Average bits per symbol (2-symbol encoding): " + avg2);
-        System.out.println("Percentage difference from optimal entropy: " + (avg2 / entropy - 1) * 100 + "%");
-        System.out.println("Percentage difference from 1-symbol encoding: " + (avg2 / avg1 - 1) * 100 + "%"); 
+        System.out.println("Percentage difference from optimal entropy: " + (avg2 / entropy2 - 1) * 100 + "%");
        
     }
 
