@@ -77,6 +77,7 @@ public class Encoder {
 
         double avg1 = calcAvgBit(symcount, bitcount);
         System.out.println("Average bits per symbol (1-symbol encoding): " + avg1);
+        System.out.println("Percentage difference from optimal entropy: " + (avg1 / entropy - 1) * 100 + "%");
 
         int letters2idx = 0;
         char ctp = '0';
@@ -111,6 +112,9 @@ public class Encoder {
 
         double avg2 = calcAvgBit2(symcount2, bitcount2);
         System.out.println("Average bits per symbol (2-symbol encoding): " + avg2);
+        System.out.println("Percentage difference from optimal entropy: " + (avg2 / entropy - 1) * 100 + "%");
+        System.out.println("Percentage difference from 1-symbol encoding: " + (avg2 / avg1 - 1) * 100 + "%"); 
+       
     }
 
 	private static double calcOptimalEntropy(int[] freq) {
