@@ -33,13 +33,25 @@ public class AES {
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 		}
-		String s = "00112233445566778899AABBCCDDEEFF";
-		char[] in = hextochar(s);
-		char[] out = subBytes(in);
-		for (int i = 0; i< in.length; i++){
-			String hex = String.format("%02x",(int) out[i]);
-			System.out.print(hex);
+		try {
+			File infile = new File(args[2]);
+			Scanner in_sc = new Scanner (infile);
+			while (in_sc.hasNextLine()) {
+				String s = in_sc.nextLine();
+				char[] in = stringtohexchar(s);
+				char[] subbed = subBytes(in);
+				/*String test = "00112233445566778899AABBCCDDEEFF";
+				char[] in = hextochar(test);
+				char[] out = subBytes(in);
+				for (int i = 0; i< in.length; i++){
+					String hex = String.format("%02x",(int) out[i]);
+					System.out.print(hex);
+				}*/
+
+			}
+
 		}
+
 	}
 
 
@@ -126,7 +138,7 @@ public class AES {
 		57,  75, 221, 124, 132, 151, 162, 253,  28,  36, 108, 180, 199,  82, 246,   1
 	};
 
-	public static char[] hextochar (String s) {
+	public static char[] stringtohexchar (String s) {
 		int len = s.length();
 		char[] out = new char[len/2];
 		for (int i = 0; i < len; i += 2) {
