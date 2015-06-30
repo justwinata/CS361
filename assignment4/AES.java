@@ -1,6 +1,42 @@
-//imports
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Scanner;
+import java.io.UnsupportedEncodingException;
+import java.io.FileNotFoundException;
 
 public class AES {
+
+	private static boolean enc = false;
+	private static boolean dec = false;
+	private static int rounds = 14;
+	private static byte[][] st = new byte[4][4];
+
+	public static void main(String[] args) {
+		assert args.length == 3 : "Invalid arguments";
+		if (args[0].equals("d")) {
+			dec = true;
+		} else {
+			enc = true;
+		}
+		try {
+			File key = new File(args[1]);
+			Scanner key_sc = new Scanner(key);
+			PrintWriter w;
+			if (dec) {
+				w = new PrintWriter(args[2] + ".dec", "UTF-8");
+			} else {
+				w = new PrintWriter(args[2] + ".enc", "UTF-8");
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException uee) {
+			uee.printStackTrace();
+		}
+		
+	}
+
+
+
 
 	//global variables
 	private static final char sbox[] = {
@@ -40,9 +76,7 @@ public class AES {
 		0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D
 	};
 
-	public static void main(String[] args) {
-
-	}
+	
 
 	    ////////////////////////  the mixColumns Tranformation ////////////////////////
 
@@ -84,6 +118,7 @@ public class AES {
 		18,  54,  90, 238,  41, 123, 141, 140, 143, 138, 133, 148, 167, 242,  13,  23, 
 		57,  75, 221, 124, 132, 151, 162, 253,  28,  36, 108, 180, 199,  82, 246,   1
 	};
+
 
     private byte mul (int a, byte b) {
 		int inda = (a < 0) ? (a + 256) : a;
@@ -134,4 +169,5 @@ public class AES {
 		st[2][c] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
 		st[3][c] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
      } // invMixColumn2
+
 }
