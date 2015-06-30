@@ -32,7 +32,13 @@ public class AES {
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 		}
-		
+		String s = "00112233445566778899AABBCCDDEEFF";
+		char[] in = hextochar(s);
+		char[] out = subBytes(in);
+		for (int i = 0; i< in.length; i++){
+			String hex = String.format("%02x",(int) out[i]);
+			System.out.print(hex);
+		}
 	}
 
 
@@ -118,6 +124,28 @@ public class AES {
 		18,  54,  90, 238,  41, 123, 141, 140, 143, 138, 133, 148, 167, 242,  13,  23, 
 		57,  75, 221, 124, 132, 151, 162, 253,  28,  36, 108, 180, 199,  82, 246,   1
 	};
+
+	public static char[] hextochar (String s) {
+		int len = s.length();
+		char[] out = new char[len/2];
+		for (int i = 0; i < len; i += 2) {
+			out [i / 2] = (char) ((Character.digit(s.charAt(i), 16)<<4)
+				+ Character.digit(s.charAt(i+1), 16));
+		}
+		return out;
+	}
+
+	public static char[] subBytes (char[] in) {
+		char[] out = new char[in.length];
+		for (int i = 0; i < in.length; i++)
+		{
+			String hex = String.format("%02x",(int) in[i]);
+			int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
+			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
+			out[i] = sbox[x * 16 + y];
+		}
+		return out;
+	}
 
 
     private byte mul (int a, byte b) {
