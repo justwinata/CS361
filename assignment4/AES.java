@@ -10,7 +10,8 @@ public class AES {
 	private static boolean dec = false;
 	private static int rounds = 14;
 	private static byte[][] st = new byte[4][4];
-
+	private static PrintWriter w;
+	
 	public static void main(String[] args) {
 		assert args.length == 3 : "Invalid arguments";
 		if (args[0].equals("d")) {
@@ -21,7 +22,7 @@ public class AES {
 		try {
 			File key = new File(args[1]);
 			Scanner key_sc = new Scanner(key);
-			PrintWriter w;
+			
 			if (dec) {
 				w = new PrintWriter(args[2] + ".dec", "UTF-8");
 			} else {
