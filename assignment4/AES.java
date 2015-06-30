@@ -33,24 +33,33 @@ public class AES {
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 		}
-		try {
+		/*try {
 			File infile = new File(args[2]);
 			Scanner in_sc = new Scanner (infile);
 			while (in_sc.hasNextLine()) {
-				String s = in_sc.nextLine();
-				char[] in = stringtohexchar(s);
+				String s = in_sc.nextLine();*/
+//				char[] in = stringtohexchar(s);
+//				char[] subbed = subBytes(in);
+				String test = "00112233445566778899AABBCCDDEEFF";
+				StringBuilder testout = new StringBuilder();
+				char[] in = stringtohexchar(test);
 				char[] subbed = subBytes(in);
-				/*String test = "00112233445566778899AABBCCDDEEFF";
-				char[] in = hextochar(test);
-				char[] out = subBytes(in);
 				for (int i = 0; i< in.length; i++){
-					String hex = String.format("%02x",(int) out[i]);
-					System.out.print(hex);
-				}*/
+					String hex = String.format("%02x",(int) subbed[i]);
+					testout.append(hex);
+				}
+				System.out.println("subbed: " + testout);
+				StringBuilder testout2 = new StringBuilder();
+				char[] shifted = shiftRows(subbed);
+				for (int i = 0; i< in.length; i++){
+					String hex = String.format("%02x",(int) shifted[i]);
+					testout2.append(hex);
+				}
+				System.out.println("switched: " + testout2);
 
-			}
+		//	}
 
-		}
+		//}
 
 	}
 
@@ -157,6 +166,27 @@ public class AES {
 			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
 			out[i] = sbox[x * 16 + y];
 		}
+		return out;
+	}
+
+	public static char[] shiftRows (char[] in) {
+		char[] out = new char[in.length];
+		out[0] = in[0];
+		out[1] = in[5];
+		out[2] = in[10];
+		out[3] = in[15];
+		out[4] = in[4];
+		out[5] = in[9];
+		out[6] = in[14];
+		out[7] = in[3];
+		out[8] = in[8];
+		out[9] = in[13];
+		out[10] = in[2];
+		out[11] = in[7];
+		out[12] = in[12];
+		out[13] = in[1];
+		out[14] = in[6];
+		out[15] = in[11];
 		return out;
 	}
 
