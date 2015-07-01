@@ -10,7 +10,9 @@ public class AES {
 	private static boolean dec = false;
 	private static int rounds = 14;
 	private static byte[][] st = new byte[4][4];
+	private static byte[][] origkey = new byte[4][4];
 	private static PrintWriter w;
+	private static byte[][] expandedKey = new byte [4][60];
 	
 	public static void main(String[] args) {
 		assert args.length == 3 : "Invalid arguments";
@@ -54,6 +56,8 @@ public class AES {
 					mixColumn(i);
 				}
 				printst(st);
+				origkey = stringtost(key_sc);
+				printst(origkey);
 
 		//	}
 
@@ -64,6 +68,10 @@ public class AES {
 
 
 	//global variables
+	private static final byte rcon[] = {
+		0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40
+	};
+
 	private static final char sbox[] = {
 		0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
 		0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0,
@@ -261,4 +269,58 @@ public class AES {
      	st[3][c] = temp;
      }
 
+     public static void keyExpansion() {
+     	//put original key into first section of expanded key
+     	for (int i = 0; i < 4; i++){
+     		for (int j = 0; i < 4; i++) {
+     			expandedKey[i][j] = origkey[i][j];
+     		}
+     	}
+     	//starting the hard stuff
+     	int i = 4;
+     	while (i < 60)
+     		temp = 
+     	if (i % 8 == 0) {
+     		temp = subBytes(rotWord(temp)) ^ rcon[]
+     	}
+     	else if (i % 8 == 4) {
+     		temp = subBytes(temp);
+     	}
+
+
+     }
+
 }
+
+
+/*
+KeyExpansion(byte key[4*8], word w[60], 8)
+begin
+	word  temp
+
+//input original key into first section
+|	i = 0
+|
+|	while (i < 8)
+|		w[i] = word(key[4*i], key[4*i+1], key[4*i+2], key[4*i+3])
+|		i = i+1
+|	end while
+	
+	i = 8
+	
+	while (i < 4 * (14+1)]
+		temp = w[i-1]
+		if (i % 8 == 0)
+			temp = SubWord(RotWord(temp)) xor Rcon[i/8]
+		else if (i mod 8 = 4)
+			temp = SubWord(temp)
+		end if
+		w[i] = w[i-8] xor temp
+		i = i + 1
+	end while
+end
+
+
+[r][c] [r][c]
+[r][c] [r][c]
+*/
