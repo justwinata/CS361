@@ -150,6 +150,10 @@ public class AES {
 			}
 		}
 		System.out.println(sb);
+		System.out.println(String.format("%02X %02X %02X %02X", st[0][0], st[0][1], st[0][2], st[0][3]));
+		System.out.println(String.format("%02X %02X %02X %02X", st[1][0], st[1][1], st[1][2], st[1][3]));
+		System.out.println(String.format("%02X %02X %02X %02X", st[2][0], st[2][1], st[2][2], st[2][3]));
+		System.out.println(String.format("%02X %02X %02X %02X", st[3][0], st[3][1], st[3][2], st[3][3]));
 	}
 
 	public static byte[][] stringtost (String s) {
@@ -157,7 +161,7 @@ public class AES {
 		int index = 0;
 		for (int i = 0; i < 4; i ++) {
 			for (int j = 0; j < 4; j ++) {
-				out [i][j] = (byte) ((Character.digit(s.charAt(index), 16)<<4)
+				out [j][i] = (byte) ((Character.digit(s.charAt(index), 16)<<4)
 					+ Character.digit(s.charAt(index+1), 16));
 				index += 2;
 			}
@@ -179,21 +183,21 @@ public class AES {
 	public static byte[][] shiftRows (byte[][] in) {
 		byte[][] out = new byte[4][4];
 		out[0][0] = in[0][0];
-		out[1][0] = in[1][0];
-		out[2][0] = in[2][0];
-		out[3][0] = in[3][0];
-		out[0][1] = in[1][1];
-		out[1][1] = in[2][1];
-		out[2][1] = in[3][1];
-		out[3][1] = in[0][1];
-		out[0][2] = in[2][2];
-		out[1][2] = in[3][2];
-		out[2][2] = in[0][2];
-		out[3][2] = in[1][2];
-		out[0][3] = in[3][3];
-		out[1][3] = in[0][3];
-		out[2][3] = in[1][3];
-		out[3][3] = in[2][3];
+		out[0][1] = in[0][1];
+		out[0][2] = in[0][2];
+		out[0][3] = in[0][3];
+		out[1][0] = in[1][1];
+		out[1][1] = in[1][2];
+		out[1][2] = in[1][3];
+		out[1][3] = in[1][0];
+		out[2][0] = in[2][2];
+		out[2][1] = in[2][3];
+		out[2][2] = in[2][0];
+		out[2][3] = in[2][1];
+		out[3][0] = in[3][3];
+		out[3][1] = in[3][0];
+		out[3][2] = in[3][1];
+		out[3][3] = in[3][2];
 		return out;
 	}
 
@@ -225,14 +229,14 @@ public class AES {
 	
 		// note that a is just a copy of st[.][c]
 		for (int i = 0; i < 4; i++) 
-		    a[i] = st[c][i];
+		    a[i] = st[i][c];
 	
 		// This is exactly the same as mixColumns1, if 
 		// the mul columns somehow match the b columns there.
-		st[c][0] = (byte)(mul(2,a[0]) ^ a[2] ^ a[3] ^ mul(3,a[1]));
-		st[c][1] = (byte)(mul(2,a[1]) ^ a[3] ^ a[0] ^ mul(3,a[2]));
-		st[c][2] = (byte)(mul(2,a[2]) ^ a[0] ^ a[1] ^ mul(3,a[3]));
-		st[c][3] = (byte)(mul(2,a[3]) ^ a[1] ^ a[2] ^ mul(3,a[0]));
+		st[0][c] = (byte)(mul(2,a[0]) ^ a[2] ^ a[3] ^ mul(3,a[1]));
+		st[1][c] = (byte)(mul(2,a[1]) ^ a[3] ^ a[0] ^ mul(3,a[2]));
+		st[2][c] = (byte)(mul(2,a[2]) ^ a[0] ^ a[1] ^ mul(3,a[3]));
+		st[3][c] = (byte)(mul(2,a[3]) ^ a[1] ^ a[2] ^ mul(3,a[0]));
     } // mixColumn2
 
 
@@ -241,12 +245,12 @@ public class AES {
 	
 		// note that a is just a copy of st[.][c]
 		for (int i = 0; i < 4; i++) 
-		    a[i] = st[c][i];
+		    a[i] = st[i][c];
 	
-		st[c][0] = (byte)(mul(0xE,a[0]) ^ mul(0xB,a[1]) ^ mul(0xD, a[2]) ^ mul(0x9,a[3]));
-		st[c][1] = (byte)(mul(0xE,a[1]) ^ mul(0xB,a[2]) ^ mul(0xD, a[3]) ^ mul(0x9,a[0]));
-		st[c][2] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
-		st[c][3] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
+		st[0][c] = (byte)(mul(0xE,a[0]) ^ mul(0xB,a[1]) ^ mul(0xD, a[2]) ^ mul(0x9,a[3]));
+		st[1][c] = (byte)(mul(0xE,a[1]) ^ mul(0xB,a[2]) ^ mul(0xD, a[3]) ^ mul(0x9,a[0]));
+		st[2][c] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
+		st[3][c] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
      } // invMixColumn2
 
 }
