@@ -42,27 +42,22 @@ public class AES {
 //				char[] subbed = subBytes(in);
 				String test = "00112233445566778899AABBCCDDEEFF";
 				StringBuilder testout = new StringBuilder();
-				char[] in = stringtohexchar(test);
-				char[] subbed = subBytes(in);
-				for (int i = 0; i< in.length; i++){
-					String hex = String.format("%02x",(int) subbed[i]);
-					testout.append(hex);
+				st = stringtost(test);
+				printst(st);	
+				subBytes(st);
+				printst(st);
+				st = shiftRows(st);
+				printst(st);
+				for (int i = 0; i < 4; i++) {
+					mixColumn(i);
 				}
-				System.out.println("subbed: " + testout);
-				StringBuilder testout2 = new StringBuilder();
-				char[] shifted = shiftRows(subbed);
-				for (int i = 0; i< in.length; i++){
-					String hex = String.format("%02x",(int) shifted[i]);
-					testout2.append(hex);
-				}
-				System.out.println("switched: " + testout2);
+				printst(st);
 
 		//	}
 
 		//}
 
 	}
-
 
 
 
@@ -147,51 +142,63 @@ public class AES {
 		57,  75, 221, 124, 132, 151, 162, 253,  28,  36, 108, 180, 199,  82, 246,   1
 	};
 
-	public static char[] stringtohexchar (String s) {
-		int len = s.length();
-		char[] out = new char[len/2];
-		for (int i = 0; i < len; i += 2) {
-			out [i / 2] = (char) ((Character.digit(s.charAt(i), 16)<<4)
-				+ Character.digit(s.charAt(i+1), 16));
+	public static void printst(byte[][] st) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++) {	
+				sb.append(String.format("%02X", st[i][j]));
+			}
+		}
+		System.out.println(sb);
+	}
+
+	public static byte[][] stringtost (String s) {
+		byte[][] out = new byte[4][4];
+		int index = 0;
+		for (int i = 0; i < 4; i ++) {
+			for (int j = 0; j < 4; j ++) {
+				out [i][j] = (byte) ((Character.digit(s.charAt(index), 16)<<4)
+					+ Character.digit(s.charAt(index+1), 16));
+				index += 2;
+			}
 		}
 		return out;
 	}
 
-	public static char[] subBytes (char[] in) {
-		char[] out = new char[in.length];
-		for (int i = 0; i < in.length; i++)
-		{
-			String hex = String.format("%02x",(int) in[i]);
-			int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
-			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
-			out[i] = sbox[x * 16 + y];
+	public static void subBytes (byte[][] in) {
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++) {
+				String hex = String.format("%02x",(byte) in[i][j]);
+				int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
+				int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
+				in[i][j] = (byte)sbox[x * 16 + y];
+			}
 		}
+	}
+
+	public static byte[][] shiftRows (byte[][] in) {
+		byte[][] out = new byte[4][4];
+		out[0][0] = in[0][0];
+		out[1][0] = in[1][0];
+		out[2][0] = in[2][0];
+		out[3][0] = in[3][0];
+		out[0][1] = in[1][1];
+		out[1][1] = in[2][1];
+		out[2][1] = in[3][1];
+		out[3][1] = in[0][1];
+		out[0][2] = in[2][2];
+		out[1][2] = in[3][2];
+		out[2][2] = in[0][2];
+		out[3][2] = in[1][2];
+		out[0][3] = in[3][3];
+		out[1][3] = in[0][3];
+		out[2][3] = in[1][3];
+		out[3][3] = in[2][3];
 		return out;
 	}
 
-	public static char[] shiftRows (char[] in) {
-		char[] out = new char[in.length];
-		out[0] = in[0];
-		out[1] = in[5];
-		out[2] = in[10];
-		out[3] = in[15];
-		out[4] = in[4];
-		out[5] = in[9];
-		out[6] = in[14];
-		out[7] = in[3];
-		out[8] = in[8];
-		out[9] = in[13];
-		out[10] = in[2];
-		out[11] = in[7];
-		out[12] = in[12];
-		out[13] = in[1];
-		out[14] = in[6];
-		out[15] = in[11];
-		return out;
-	}
 
-
-    private byte mul (int a, byte b) {
+    private static byte mul (int a, byte b) {
 		int inda = (a < 0) ? (a + 256) : a;
 		int indb = (b < 0) ? (b + 256) : b;
 
@@ -210,7 +217,7 @@ public class AES {
     // array of bytes.  If your state is an array of integers, you'll have
     // to make adjustments. 
 
-    public void mixColumn2 (int c) {
+    public static void mixColumn (int c) {
 	// This is another alternate version of mixColumn, using the 
 	// logtables to do the computation.
 	
@@ -218,27 +225,28 @@ public class AES {
 	
 		// note that a is just a copy of st[.][c]
 		for (int i = 0; i < 4; i++) 
-		    a[i] = st[i][c];
+		    a[i] = st[c][i];
 	
 		// This is exactly the same as mixColumns1, if 
 		// the mul columns somehow match the b columns there.
-		st[0][c] = (byte)(mul(2,a[0]) ^ a[2] ^ a[3] ^ mul(3,a[1]));
-		st[1][c] = (byte)(mul(2,a[1]) ^ a[3] ^ a[0] ^ mul(3,a[2]));
-		st[2][c] = (byte)(mul(2,a[2]) ^ a[0] ^ a[1] ^ mul(3,a[3]));
-		st[3][c] = (byte)(mul(2,a[3]) ^ a[1] ^ a[2] ^ mul(3,a[0]));
+		st[c][0] = (byte)(mul(2,a[0]) ^ a[2] ^ a[3] ^ mul(3,a[1]));
+		st[c][1] = (byte)(mul(2,a[1]) ^ a[3] ^ a[0] ^ mul(3,a[2]));
+		st[c][2] = (byte)(mul(2,a[2]) ^ a[0] ^ a[1] ^ mul(3,a[3]));
+		st[c][3] = (byte)(mul(2,a[3]) ^ a[1] ^ a[2] ^ mul(3,a[0]));
     } // mixColumn2
+
 
     public void invMixColumn2 (int c) {
 		byte a[] = new byte[4];
 	
 		// note that a is just a copy of st[.][c]
 		for (int i = 0; i < 4; i++) 
-		    a[i] = st[i][c];
+		    a[i] = st[c][i];
 	
-		st[0][c] = (byte)(mul(0xE,a[0]) ^ mul(0xB,a[1]) ^ mul(0xD, a[2]) ^ mul(0x9,a[3]));
-		st[1][c] = (byte)(mul(0xE,a[1]) ^ mul(0xB,a[2]) ^ mul(0xD, a[3]) ^ mul(0x9,a[0]));
-		st[2][c] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
-		st[3][c] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
+		st[c][0] = (byte)(mul(0xE,a[0]) ^ mul(0xB,a[1]) ^ mul(0xD, a[2]) ^ mul(0x9,a[3]));
+		st[c][1] = (byte)(mul(0xE,a[1]) ^ mul(0xB,a[2]) ^ mul(0xD, a[3]) ^ mul(0x9,a[0]));
+		st[c][2] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
+		st[c][3] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
      } // invMixColumn2
 
 }
