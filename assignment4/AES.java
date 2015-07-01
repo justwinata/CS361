@@ -44,7 +44,9 @@ public class AES {
 				StringBuilder testout = new StringBuilder();
 				st = stringtost(test);
 				printst(st);	
-				subBytes(st);
+				for (int i = 0; i < 4; i++) {
+					subBytes(i);
+				}
 				printst(st);
 				st = shiftRows(st);
 				printst(st);
@@ -169,14 +171,12 @@ public class AES {
 		return out;
 	}
 
-	public static void subBytes (byte[][] in) {
+	public static void subBytes (int c) {
 		for (int i = 0; i < 4; i++){
-			for (int j = 0; j < 4; j++) {
-				String hex = String.format("%02x",(byte) in[i][j]);
-				int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
-				int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
-				in[i][j] = (byte)sbox[x * 16 + y];
-			}
+			String hex = String.format("%02x",(byte) st[i][c]);
+			int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
+			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
+			st[i][c] = (byte)sbox[x * 16 + y];
 		}
 	}
 
@@ -240,7 +240,7 @@ public class AES {
     } // mixColumn2
 
 
-    public void invMixColumn2 (int c) {
+    public static void invMixColumn2 (int c) {
 		byte a[] = new byte[4];
 	
 		// note that a is just a copy of st[.][c]
@@ -252,5 +252,13 @@ public class AES {
 		st[2][c] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
 		st[3][c] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
      } // invMixColumn2
+
+     public static void rotWord (int c) {
+     	byte temp = st[0][c];
+     	st[0][c] = st[1][c];
+     	st[1][c] = st[2][c];
+     	st[2][c] = st[3][c];
+     	st[3][c] = temp;
+     }
 
 }
