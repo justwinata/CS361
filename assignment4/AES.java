@@ -13,6 +13,7 @@ public class AES {
 	private static byte[][] origkey = new byte[4][4];
 	private static PrintWriter w;
 	private static byte[][] expandedKey = new byte [4][60];
+	private static byte[] tempcol = new byte[4];
 	
 	public static void main(String[] args) {
 		assert args.length == 3 : "Invalid arguments";
@@ -24,6 +25,9 @@ public class AES {
 		try {
 			File key = new File(args[1]);
 			Scanner key_sc = new Scanner(key);
+			origkey = stringtost(key_sc.nextLine());
+			keyExpansion();
+			printst(origkey);
 			
 			if (dec) {
 				w = new PrintWriter(args[2] + ".dec", "UTF-8");
@@ -42,12 +46,19 @@ public class AES {
 				String s = in_sc.nextLine();*/
 //				char[] in = stringtohexchar(s);
 //				char[] subbed = subBytes(in);
+				printkey(expandedKey);
 				String test = "00112233445566778899AABBCCDDEEFF";
 				StringBuilder testout = new StringBuilder();
 				st = stringtost(test);
-				printst(st);	
-				for (int i = 0; i < 4; i++) {
-					subBytes(i);
+				printst(st);
+				for (int c = 0; c < 4; c++) {
+					for (int r = 0; r < 4; r++) {
+						tempcol[r] = st[r][c];
+					}
+					tempcol = subBytes(tempcol);
+					for (int r2 = 0; r2 < 4; r2++) {
+						st[r2][c] = tempcol[r2];
+					}
 				}
 				printst(st);
 				st = shiftRows(st);
@@ -56,8 +67,6 @@ public class AES {
 					mixColumn(i);
 				}
 				printst(st);
-				origkey = stringtost(key_sc);
-				printst(origkey);
 
 		//	}
 
@@ -69,7 +78,7 @@ public class AES {
 
 	//global variables
 	private static final byte rcon[] = {
-		0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40
+		0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40
 	};
 
 	private static final char sbox[] = {
@@ -165,6 +174,28 @@ public class AES {
 		System.out.println(String.format("%02X %02X %02X %02X", st[2][0], st[2][1], st[2][2], st[2][3]));
 		System.out.println(String.format("%02X %02X %02X %02X", st[3][0], st[3][1], st[3][2], st[3][3]));
 	}
+	public static void printkey(byte[][] key) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++) {	
+				sb.append(String.format("%02X", st[i][j]));
+			}
+		}
+		StringBuilder sb0 = new StringBuilder();
+		StringBuilder sb1 = new StringBuilder();
+		StringBuilder sb2 = new StringBuilder();
+		StringBuilder sb3 = new StringBuilder();
+		for (int c = 0; c < 60; c++) {
+			sb0.append(String.format("%02X ", key[0][c]));
+			sb1.append(String.format("%02X ", key[1][c]));
+			sb2.append(String.format("%02X ", key[2][c]));
+			sb3.append(String.format("%02X ", key[3][c]));
+		}
+		System.out.println(sb0);
+		System.out.println(sb1);
+		System.out.println(sb2);
+		System.out.println(sb3);
+	}
 
 	public static byte[][] stringtost (String s) {
 		byte[][] out = new byte[4][4];
@@ -179,13 +210,14 @@ public class AES {
 		return out;
 	}
 
-	public static void subBytes (int c) {
+	public static byte[] subBytes (byte[] c) {
 		for (int i = 0; i < 4; i++){
-			String hex = String.format("%02x",(byte) st[i][c]);
+			String hex = String.format("%02x",(byte) c[i]);
 			int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
 			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
-			st[i][c] = (byte)sbox[x * 16 + y];
+			c[i] = (byte)sbox[x * 16 + y];
 		}
+		return c;
 	}
 
 	public static byte[][] shiftRows (byte[][] in) {
@@ -259,68 +291,48 @@ public class AES {
 		st[1][c] = (byte)(mul(0xE,a[1]) ^ mul(0xB,a[2]) ^ mul(0xD, a[3]) ^ mul(0x9,a[0]));
 		st[2][c] = (byte)(mul(0xE,a[2]) ^ mul(0xB,a[3]) ^ mul(0xD, a[0]) ^ mul(0x9,a[1]));
 		st[3][c] = (byte)(mul(0xE,a[3]) ^ mul(0xB,a[0]) ^ mul(0xD, a[1]) ^ mul(0x9,a[2]));
-     } // invMixColumn2
+    } // invMixColumn2
 
-     public static void rotWord (int c) {
-     	byte temp = st[0][c];
-     	st[0][c] = st[1][c];
-     	st[1][c] = st[2][c];
-     	st[2][c] = st[3][c];
-     	st[3][c] = temp;
-     }
+    public static byte[] rotWord (byte[] c) {
+     	byte tempbyte = c[0];
+     	c[0] = c[1];
+     	c[1] = c[2];
+     	c[2] = c[3];
+     	c[3] = tempbyte;
+     	/*for (int r = 0; r < 4; r++) {
+	     	System.out.println(String.format("rot: %02X",c[r]));
+     	}*/
+     	return c;
+    }
 
-     public static void keyExpansion() {
+    public static void keyExpansion() {
      	//put original key into first section of expanded key
-     	for (int i = 0; i < 4; i++){
-     		for (int j = 0; i < 4; i++) {
-     			expandedKey[i][j] = origkey[i][j];
+     	for (int r = 0; r < 4; r++){
+     		for (int c = 0; c < 4; c++) {
+     			expandedKey[r][c] = origkey[r][c];
      		}
      	}
      	//starting the hard stuff
-     	int i = 4;
-     	while (i < 60)
-     		temp = 
-     	if (i % 8 == 0) {
-     		temp = subBytes(rotWord(temp)) ^ rcon[]
-     	}
-     	else if (i % 8 == 4) {
-     		temp = subBytes(temp);
-     	}
-
-
-     }
+     	int c = 4;
+     	while (c < 60) {
+     		for (int r = 0; r < 4; r++) {
+     			tempcol[r] = expandedKey[r][c-1];
+     			//System.out.println(String.format("temp: %02X",tempcol[r]));
+     		}
+     		if (c % 8 == 0) {
+     			tempcol = subBytes(rotWord(tempcol)); 
+     			tempcol[0] = (byte) ((int) tempcol[0] ^ (int) rcon[c/8]);
+     		}
+     		else if (c % 8 == 4) {
+     			tempcol = subBytes(tempcol);
+     		}
+     		for (int r = 0; r < 4; r++) {
+     			if (c >=8) {
+	     			expandedKey[r][c] = (byte) ((int) expandedKey[r][c - 8] ^ (int) tempcol[r]);
+	     		}
+     		}
+     		c++;
+	    }
+    }
 
 }
-
-
-/*
-KeyExpansion(byte key[4*8], word w[60], 8)
-begin
-	word  temp
-
-//input original key into first section
-|	i = 0
-|
-|	while (i < 8)
-|		w[i] = word(key[4*i], key[4*i+1], key[4*i+2], key[4*i+3])
-|		i = i+1
-|	end while
-	
-	i = 8
-	
-	while (i < 4 * (14+1)]
-		temp = w[i-1]
-		if (i % 8 == 0)
-			temp = SubWord(RotWord(temp)) xor Rcon[i/8]
-		else if (i mod 8 = 4)
-			temp = SubWord(temp)
-		end if
-		w[i] = w[i-8] xor temp
-		i = i + 1
-	end while
-end
-
-
-[r][c] [r][c]
-[r][c] [r][c]
-*/
