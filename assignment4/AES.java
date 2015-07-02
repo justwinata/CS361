@@ -14,6 +14,7 @@ public class AES {
 	private static PrintWriter w;
 	private static byte[][] expandedKey = new byte [4][60];
 	private static byte[] tempcol = new byte[4];
+	private static int keyindex = 0;
 	
 	public static void main(String[] args) {
 		assert args.length == 3 : "Invalid arguments";
@@ -51,21 +52,10 @@ public class AES {
 				StringBuilder testout = new StringBuilder();
 				st = stringtost(test);
 				printst(st);
-				for (int c = 0; c < 4; c++) {
-					for (int r = 0; r < 4; r++) {
-						tempcol[r] = st[r][c];
-					}
-					tempcol = subBytes(tempcol);
-					for (int r2 = 0; r2 < 4; r2++) {
-						st[r2][c] = tempcol[r2];
-					}
-				}
-				printst(st);
-				st = shiftRows(st);
-				printst(st);
-				for (int i = 0; i < 4; i++) {
-					mixColumn(i);
-				}
+/*
+				printst(st);*/
+				encryption();
+				System.out.println("Encrypt:");
 				printst(st);
 
 		//	}
@@ -299,25 +289,19 @@ public class AES {
      	c[1] = c[2];
      	c[2] = c[3];
      	c[3] = tempbyte;
-     	/*for (int r = 0; r < 4; r++) {
-	     	System.out.println(String.format("rot: %02X",c[r]));
-     	}*/
      	return c;
     }
 
     public static void keyExpansion() {
-     	//put original key into first section of expanded key
      	for (int r = 0; r < 4; r++){
      		for (int c = 0; c < 4; c++) {
      			expandedKey[r][c] = origkey[r][c];
      		}
      	}
-     	//starting the hard stuff
      	int c = 4;
      	while (c < 60) {
      		for (int r = 0; r < 4; r++) {
      			tempcol[r] = expandedKey[r][c-1];
-     			//System.out.println(String.format("temp: %02X",tempcol[r]));
      		}
      		if (c % 8 == 0) {
      			tempcol = subBytes(rotWord(tempcol)); 
@@ -335,4 +319,36 @@ public class AES {
 	    }
     }
 
+    public static void addRoundKey () {
+    	for (int c = 0; c < 4; c++) {
+	    	for (int r = 0; r < 4; r++) {
+	    		st[r][c] = (byte) ((int) st[r][c] ^ (int) expandedKey[r][keyindex + c]);
+	    	}
+	    }
+    	keyindex += 4;
+    }
+    public static void encryption () {
+    	System.out.println("addRoundKey0: ");
+    	addRoundKey();
+    	printst(st);
+    	//for(int i = 0; i < rounds; i++) {
+    	System.out.println("sub: ");
+			for (int c = 0; c < 4; c++) {
+				for (int r = 0; r < 4; r++) {
+					tempcol[r] = st[r][c];
+				}
+				tempcol = subBytes(tempcol);
+				for (int r2 = 0; r2 < 4; r2++) {
+					st[r2][c] = tempcol[r2];
+				}
+			}
+			printst(st);
+    	System.out.println("shift: ");
+			st = shiftRows(st);
+			printst(st);
+		/*	for (int c = 0; c < 4; c++) {
+				mixColumn(c);
+			}*/
+		//}
+    }
 }
