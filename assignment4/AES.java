@@ -28,18 +28,26 @@ public class AES {
 			Scanner key_sc = new Scanner(key);
 			origkey = stringtost(key_sc.nextLine());
 			keyExpansion();
-			printst(origkey);
-			
-			if (dec) {
-				w = new PrintWriter(args[2] + ".dec", "UTF-8");
-			} else {
-				w = new PrintWriter(args[2] + ".enc", "UTF-8");
+			File input = new File(args[2]);
+			Scanner in = new Scanner(input);
+			while (in.hasNextLine()) {
+//			printst(origkey);
+				st = stringtost(in.nextLine());
+				if (dec) {
+					w = new PrintWriter(args[2] + ".dec", "UTF-8");
+					decryption();
+				} else {
+					w = new PrintWriter(args[2] + ".enc", "UTF-8");
+					encryption();
+				}
+				printst(st);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 		}
+		w.close();
 		/*try {
 			File infile = new File(args[2]);
 			Scanner in_sc = new Scanner (infile);
@@ -47,16 +55,18 @@ public class AES {
 				String s = in_sc.nextLine();*/
 //				char[] in = stringtohexchar(s);
 //				char[] subbed = subBytes(in);
-				printkey(expandedKey);
-				String test = "00112233445566778899AABBCCDDEEFF";
-				StringBuilder testout = new StringBuilder();
+//				printkey(expandedKey);
+				/*StringBuilder testout = new StringBuilder();
 				st = stringtost(test);
-				printst(st);
+				//printst(st, w);
 /*
-				printst(st);*/
-				encryption();
-				System.out.println("Encrypt:");
 				printst(st);
+				encryption();
+				System.out.println("Encrypted:");
+				printst(st);
+				decryption();
+				System.out.println("Decrypted: ");
+				printst(st);*/
 
 		//	}
 
@@ -153,12 +163,17 @@ public class AES {
 
 	public static void printst(byte[][] st) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 4; i++){
-			for (int j = 0; j < 4; j++) {	
-				sb.append(String.format("%02X", st[i][j]));
+		for (int c = 0; c < 4; c++){
+			for (int r = 0; r < 4; r++) {	
+				sb.append(String.format("%02X", st[r][c]));
 			}
 		}
-		System.out.println(sb);
+		w.println(sb);
+/*		w.println(String.format("%02X %02X %02X %02X", st[0][0], st[0][1], st[0][2], st[0][3]));
+		w.println(String.format("%02X %02X %02X %02X", st[1][0], st[1][1], st[1][2], st[1][3]));
+		w.println(String.format("%02X %02X %02X %02X", st[2][0], st[2][1], st[2][2], st[2][3]));
+		w.println(String.format("%02X %02X %02X %02X", st[3][0], st[3][1], st[3][2], st[3][3]));*/
+
 		System.out.println(String.format("%02X %02X %02X %02X", st[0][0], st[0][1], st[0][2], st[0][3]));
 		System.out.println(String.format("%02X %02X %02X %02X", st[1][0], st[1][1], st[1][2], st[1][3]));
 		System.out.println(String.format("%02X %02X %02X %02X", st[2][0], st[2][1], st[2][2], st[2][3]));
@@ -210,6 +225,15 @@ public class AES {
 		return c;
 	}
 
+	public static byte[] invSubBytes (byte[] c) {
+		for (int i = 0; i < 4; i++){
+			String hex = String.format("%02x",(byte) c[i]);
+			int x = Integer.parseInt(Character.toString(hex.charAt(0)), 16);
+			int y = Integer.parseInt(Character.toString(hex.charAt(1)), 16);
+			c[i] = (byte)isbox[x * 16 + y];
+		}
+		return c;
+	}
 	public static byte[][] shiftRows (byte[][] in) {
 		byte[][] out = new byte[4][4];
 		out[0][0] = in[0][0];
@@ -228,6 +252,27 @@ public class AES {
 		out[3][1] = in[3][0];
 		out[3][2] = in[3][1];
 		out[3][3] = in[3][2];
+		return out;
+	}
+
+	public static byte[][] invShiftRows (byte[][] in) {
+		byte[][] out = new byte[4][4];
+		out[0][0] = in[0][0];
+		out[0][1] = in[0][1];
+		out[0][2] = in[0][2];
+		out[0][3] = in[0][3];
+		out[1][0] = in[1][3];
+		out[1][1] = in[1][0];
+		out[1][2] = in[1][1];
+		out[1][3] = in[1][2];
+		out[2][0] = in[2][2];
+		out[2][1] = in[2][3];
+		out[2][2] = in[2][0];
+		out[2][3] = in[2][1];
+		out[3][0] = in[3][1];
+		out[3][1] = in[3][2];
+		out[3][2] = in[3][3];
+		out[3][3] = in[3][0];
 		return out;
 	}
 
@@ -270,7 +315,7 @@ public class AES {
     } // mixColumn2
 
 
-    public static void invMixColumn2 (int c) {
+    public static void invMixColumn (int c) {
 		byte a[] = new byte[4];
 	
 		// note that a is just a copy of st[.][c]
@@ -325,14 +370,15 @@ public class AES {
 	    		st[r][c] = (byte) ((int) st[r][c] ^ (int) expandedKey[r][keyindex + c]);
 	    	}
 	    }
-    	keyindex += 4;
     }
     public static void encryption () {
-    	System.out.println("addRoundKey0: ");
+    	keyindex = 0;
+//    	System.out.println("addRoundKey0: ");
     	addRoundKey();
-    	printst(st);
-    	//for(int i = 0; i < rounds; i++) {
-    	System.out.println("sub: ");
+    	keyindex += 4;
+//    	printst(st);
+    	for(int i = 1; i < 14; i++) {
+//    	System.out.println("sub: " + i);
 			for (int c = 0; c < 4; c++) {
 				for (int r = 0; r < 4; r++) {
 					tempcol[r] = st[r][c];
@@ -342,13 +388,87 @@ public class AES {
 					st[r2][c] = tempcol[r2];
 				}
 			}
-			printst(st);
-    	System.out.println("shift: ");
+//			printst(st);
+//    	System.out.println("shift: " + i);
 			st = shiftRows(st);
-			printst(st);
-		/*	for (int c = 0; c < 4; c++) {
+//			printst(st);
+//		System.out.println("mix: " + i);
+			for (int c = 0; c < 4; c++) {
 				mixColumn(c);
-			}*/
-		//}
+			}
+//			printst(st);
+//		System.out.println("add: " + i);
+			addRoundKey();
+			keyindex += 4;
+//			printst(st);
+		}
+//		System.out.println("sub: 14");
+		for (int c = 0; c < 4; c++) {
+			for (int r = 0; r < 4; r++) {
+				tempcol[r] = st[r][c];
+			}
+			tempcol = subBytes(tempcol);
+			for (int r2 = 0; r2 < 4; r2++) {
+				st[r2][c] = tempcol[r2];
+			}
+		}
+//		printst(st);
+//    	System.out.println("shift: 14");
+		st = shiftRows(st);
+//		printst(st);
+//		System.out.println("add: 14");
+		addRoundKey();
+//		printst(st);
+    }
+
+    public static void decryption () {
+    	keyindex = 56;
+//    	System.out.println("addRoundKey0: ");
+    	addRoundKey();
+    	keyindex -= 4;
+//    	printst(st);
+    	for(int i = 1; i < 14; i++) {
+//    		System.out.println("inv shift: " + i);
+			st = invShiftRows(st);
+//			printst(st);
+//    	System.out.println("inv sub: " + i);
+			for (int c = 0; c < 4; c++) {
+				for (int r = 0; r < 4; r++) {
+					tempcol[r] = st[r][c];
+				}
+				tempcol = invSubBytes(tempcol);
+				for (int r2 = 0; r2 < 4; r2++) {
+					st[r2][c] = tempcol[r2];
+				}
+			}
+//			printst(st);
+//		System.out.println("add: " + i);
+			addRoundKey();
+			keyindex -= 4;
+//			printst(st);
+//		System.out.println("inv mix: " + i);
+			for (int c = 0; c < 4; c++) {
+				invMixColumn(c);
+			}
+//			printst(st);
+		}
+//    	System.out.println("inv shift: 14");
+		st = invShiftRows(st);
+//		printst(st);
+//		System.out.println("inv sub: 14");
+		for (int c = 0; c < 4; c++) {
+			for (int r = 0; r < 4; r++) {
+				tempcol[r] = st[r][c];
+			}
+			tempcol = invSubBytes(tempcol);
+			for (int r2 = 0; r2 < 4; r2++) {
+				st[r2][c] = tempcol[r2];
+			}
+		}
+//		printst(st);
+
+//		System.out.println("add: 14");
+		addRoundKey();
+//		printst(st);
     }
 }
