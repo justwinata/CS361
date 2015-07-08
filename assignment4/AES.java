@@ -3,6 +3,8 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.UnsupportedEncodingException;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class AES {
 
@@ -20,8 +22,16 @@ public class AES {
 		assert args.length == 3 : "Invalid arguments";
 		if (args[0].equals("d")) {
 			dec = true;
+			File filename = new File (args[2] + ".dec");
+			if (filename.exists()){
+				filename.delete();
+			}
 		} else {
 			enc = true;
+			File filename = new File (args[2] + ".enc");
+			if (filename.exists()) {
+				filename.delete();
+			}
 		}
 		try {
 			File key = new File(args[1]);
@@ -34,18 +44,31 @@ public class AES {
 //			printst(origkey);
 				st = stringtost(in.nextLine());
 				if (dec) {
-					w = new PrintWriter(args[2] + ".dec", "UTF-8");
+					w = new PrintWriter(new FileWriter (args[2] + ".dec", true));
+					long startTime = System.nanoTime();
 					decryption();
+					long endTime = System.nanoTime();
+					long duration = (endTime - startTime) / 1000000;
+					System.out.println(duration + " milliseconds to decrypt"); 
+					printst(st);
+					w.close();
 				} else {
-					w = new PrintWriter(args[2] + ".enc", "UTF-8");
+					w = new PrintWriter(new FileWriter (args[2] + ".enc", true));
+					long startTime = System.nanoTime();
 					encryption();
+					long endTime = System.nanoTime();
+					long duration = (endTime - startTime) / 1000000;
+					System.out.println(duration + " milliseconds to encrypt"); 
+					printst(st);
+					w.close();
 				}
-				printst(st);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 		w.close();
 		/*try {
