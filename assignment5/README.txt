@@ -21,6 +21,10 @@ where inputFile1 is the dictionary and inputFile2 is a list of passwords to crac
 We completed the requirements. We also mostly completed finding passwords that have been mangled twice, however not if their second round of mangling involved appending or prepending a character.
 
 [Test Cases]
+
+[Command line for test 1]
+java PasswordCrack shortdict passwd1
+
 [Input of test 1]
 https://www.cs.utexas.edu/~byoung/cs361/passwd1
 
@@ -46,6 +50,8 @@ Failed for: dustin
 Salizar
 Failed for: paige
 
+______________________________
+
 
 I can crack 16 cases. 
 List of cracked: 
@@ -66,12 +72,15 @@ teserP
 enoggone
 Salizar
 
-I can not crack 4 cases.
+I cannot crack 4 cases.
 List of uncracked:
 sHREWDq
 obliqu3
 litpeR
 hI6d$pC2
+
+[Command line for test 1]
+java PasswordCrack shortdict passwd1
 
 [Input of test 2]
 https://www.cs.utexas.edu/~byoung/cs361/passwd2
@@ -98,6 +107,9 @@ Swine3
 Failed for: maia
 Failed for: paige
 
+______________________________
+
+
 I can crack 15 cases.
 List of cracked:
 tremors
@@ -116,7 +128,7 @@ zoossooz
 nosral
 Swine3
 
-I Can not crack 5 cases.
+I cannot crack 5 cases.
 List of uncracked:
 victor:w@FxBZv.d0y/U:512:512:Victor Esperanza:/home/victor:
 nathan:nxr9OOqvZjbGs:514:514:Nathan Moore:/home/nathan:/bin/ksh
