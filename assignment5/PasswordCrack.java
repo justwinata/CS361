@@ -16,7 +16,6 @@ public class PasswordCrack {
 			dictionary = new File(args[0]);
 			toCrack = new File(args[1]);
 			sc = new Scanner (toCrack);
-			dictsc = new Scanner(dictionary);
 			while (sc.hasNextLine()) {
 				boolean match = false;
 				String in = sc.nextLine();
@@ -70,6 +69,7 @@ public class PasswordCrack {
 						
 							if (!fnmanglematch) {
 								//dictionary mangles
+                                dictsc = new Scanner(dictionary);
 								while (dictsc.hasNextLine() && !match) {
 									mangle(dictsc.nextLine());
 									for (int i = 0; i < attempts.size() && !match; i++) {
