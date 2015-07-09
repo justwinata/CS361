@@ -9,7 +9,7 @@ public class PasswordCrack {
 	private static File toCrack;
 	private static Scanner sc;
 	private static Scanner dictsc;
-
+	private static ArrayList<String> attempts = new ArrayList<String>();
 
 	public static void main (String[] args) {
 		try {
@@ -23,39 +23,90 @@ public class PasswordCrack {
 				String crypt = in.substring(in.indexOf(":") + 1, in.indexOf(":") + 14);
 				String salt = crypt.substring(0,2);
 				String[] temp = in.split(" ");
+
+				//check first name
 				String fn = temp[0].substring(temp[0].lastIndexOf(":") + 1).toLowerCase();
+
 				match = check(fn, salt, crypt);
 				if (match) {
 					System.out.println(fn);
 				}
 				else {
+					//check last name
 					String ln = temp[1].substring(0,temp[1].indexOf(":")).toLowerCase();
 					match = check(ln, salt, crypt);
-					System.out.println(match);
 					if (match) {
 						System.out.println(ln);
 					}
 					else {
-						ArrayList<String> lnattempts = mangle(ln);
-						for (int i = 0; i < lnattempts.size() && !match; i++) {
-							match = check(lnattempts.get(i), salt, crypt);	
+
+						//check last name mangles
+						mangle(ln);
+						boolean lnmanglematch = false;
+						for (int i = 0; i < attempts.size() && !match; i++) {
+							match = check(attempts.get(i), salt, crypt);	
 							if (match) {
-								System.out.println(lnattempts.get(i));
+								System.out.println(attempts.get(i));
+								attempts.clear();
+								lnmanglematch = true;
 							}
 						}
+						attempts.clear();
+
+
+						if (!lnmanglematch) {
+							//check first name mangles
+							mangle(fn);
+							boolean fnmanglematch = false;
+							for (int i = 0; i < attempts.size() && !match; i++) {
+								match = check(attempts.get(i), salt, crypt);	
+								if (match) {
+									System.out.println(attempts.get(i));
+									attempts.clear();
+									fnmanglematch = true;
+								}
+							}
+							attempts.clear();
 						
+							if (!fnmanglematch) {
+								//dictionary mangles
+								while (dictsc.hasNextLine() && !match) {
+									mangle(dictsc.nextLine());
+									for (int i = 0; i < attempts.size() && !match; i++) {
+										match = check(attempts.get(i), salt, crypt);	
+										//System.out.println(dictlineattempts.get(i));
+										if (match) {
+											System.out.println(attempts.get(i));
+											attempts.clear();
+										}
+									}
+									attempts.clear();
+								}
+								attempts.clear();
+								if (!match) {
+									System.out.println("Failed for: " + fn);
+									attempts.clear();
+								}
+								attempts.clear();
+							}
+							attempts.clear();
+						}
+						attempts.clear();
 					}
+					attempts.clear();
 				}
-				//ArrayList<String> lnattempts = mangle(ln);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static ArrayList<String> mangle (String in) {
-		ArrayList<String> attempts =  new ArrayList<String>();
+	private static void mangle (String in) {	
+		attempts.clear();
+		attempts.add(in);
+		attempts.add(in.toUpperCase());
 		String test = in.toLowerCase();
+		attempts.add(test);
 		attempts.addAll(prepend(test));
 		attempts.addAll(append(test));
 		attempts.add(deleteFirst(test));
@@ -70,21 +121,13 @@ public class PasswordCrack {
 		attempts.add(ncapitalize(test));
 		attempts.add(toggleCase1(test));	
 		attempts.add(toggleCase2(test));	
-		return attempts;
+		//return attempts;
 	}
-
-	private static void mangledict (String in) {
-		while (dictsc.hasNextLine()) {
-			ArrayList<String> dictattempt = mangle(dictsc.nextLine());
-		}
-	}
-
-
 
 	private static boolean check (String in, String salt, String crypt) {
 		String check = jcrypt.crypt(salt, in);
-		System.out.println("post: " +check);
-		System.out.println("pw: " +crypt);
+		//System.out.println("post: " +check);
+		//System.out.println("pw: " +crypt);
 		if (check.equals(crypt)) {
 			return true;
 		}
@@ -116,7 +159,7 @@ public class PasswordCrack {
 	}
 
 	private static String deleteLast (String in) {
-		return in.substring(0, in.length());
+		return in.substring(0, in.length() - 1);
 	}
 
 	private static String reverse (String in) {
